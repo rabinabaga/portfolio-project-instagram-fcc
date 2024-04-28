@@ -6,8 +6,8 @@ import * as ROUTES from "../constants/routes";
 // import { DEFAULT_IMAGE_PATH } from '../constants/paths';
 
 export default function Header() {
-  const { user, setUser } = GlobalDataState();
-
+  const {user, setUser } = GlobalDataState() || {};
+console.log("user in header", user?.token);
   const navigate = useNavigate();
 
   return (
@@ -18,7 +18,7 @@ export default function Header() {
             <h1 className="flex justify-center w-full">
               <Link to={ROUTES.DASHBOARD} aria-label="Instagram logo">
                 <img
-                  src="/images/logo.png"
+                  src="/imges/logo.png"
                   alt="Instagram"
                   className="mt-2 w-6/12"
                 />
@@ -79,7 +79,7 @@ export default function Header() {
                     <Link to={`/p/${user?.username}`}>
                       <img
                         className="rounded-full h-8 w-8 flex"
-                        src={`/images/avatars/${user?.username}.jpg`}
+                        src={`/imges/avatars/${user?.username}.jpg`}
                         alt={`${user?.username} profile`}
                         // onError={(e) => {
                         //   e.target.src = DEFAULT_IMAGE_PATH;
