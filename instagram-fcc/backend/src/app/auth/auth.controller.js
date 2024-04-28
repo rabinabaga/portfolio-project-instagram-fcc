@@ -5,15 +5,16 @@ class AuthController {
   async signUp(req, res, next) {
     const createdUser = await UserModel.create(req.body);
     console.log(createdUser.fullName);
-    res.status(400).json(createdUser);
+    res.status(200).json(createdUser);
   }
 
   async login(req, res, next) {
     const { email, password } = req.body;
-    const user = await UserModel.findOne({ email });
-
+    // "email": "akhada@gmail.com",
+    //   "password":"1612$ten"
+    const user = await UserModel.findOne({ email: "akhada@gmail.com" });
     if (user && (await user.matchPassword(password))) {
-      res.status(400).json({
+      res.status(200).json({
         _id: user._id,
         fullName: user.fullName,
         email: user.email,
@@ -26,7 +27,9 @@ class AuthController {
       });
     } else {
       res.status(401);
-      throw new Error("Invalid Email or Password");
+      next({
+        message: "invalid email or password",
+      });
     }
   }
 }
