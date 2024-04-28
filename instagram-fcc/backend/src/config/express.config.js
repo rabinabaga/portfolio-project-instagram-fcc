@@ -17,7 +17,7 @@ app.use((req, res, next) => {
   
   app.use((error, req, res, next) => {
     let code = error.code ?? 500;
-    let msg = error.message ?? "Internal server error";
+    let msg = "external server error";
   
     res.status(code).json({
       result: null,
