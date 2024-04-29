@@ -6,8 +6,7 @@ import * as ROUTES from "../constants/routes";
 // import { DEFAULT_IMAGE_PATH } from '../constants/paths';
 
 export default function Header() {
-  const {user, setUser } = GlobalDataState() || {};
-console.log("user in header", user?.token);
+  const { user, setUser } = GlobalDataState() || {};
   const navigate = useNavigate();
 
   return (
@@ -49,12 +48,13 @@ console.log("user in header", user?.token);
                   type="button"
                   title="Sign Out"
                   onClick={() => {
-                    setUser(null);
+                    localStorage.removeItem("userInfo");
                     navigate(ROUTES.LOGIN);
                   }}
                   onKeyDown={(event) => {
                     if (event.key === "Enter") {
-                      setUser(null);
+                      localStorage.removeItem("userInfo");
+
                       navigate(ROUTES.LOGIN);
                     }
                   }}
