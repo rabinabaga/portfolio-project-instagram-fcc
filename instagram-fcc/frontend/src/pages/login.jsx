@@ -30,6 +30,7 @@ export default function Login() {
         config
       );
       setUser(data);
+      localStorage.setItem("userInfo", JSON.stringify(data));
       navigate(ROUTES.DASHBOARD);
     } catch (error) {
       console.log("error", error);

@@ -32,6 +32,17 @@ class AuthController {
       });
     }
   }
+
+  async getSuggestedProfiles(req, res, next) {
+    const { following } = await UserModel.find({ _id: req.user._id });
+    const result = await UserModel.find({ _id: { $nin: following } }).limit(10);
+    if (result) {
+      res.status(200).json({
+        data:result,
+        msg:"suggested profiles fetched successfully",
+      })
+    }
+  }
 }
 
 const authCtrl = new AuthController();

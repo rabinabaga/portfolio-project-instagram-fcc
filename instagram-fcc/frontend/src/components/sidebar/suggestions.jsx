@@ -1,0 +1,70 @@
+import { useEffect } from "react";
+import Skeleton from "react-loading-skeleton";
+import { getSuggestedProfiles } from "../../services/mongodb-queries";
+import { useState } from "react";
+import SuggestedProfile from "./suggested-profile";
+import { GlobalDataState } from "../../context/GlobalDataProvider";
+import axios from "axios";
+
+export default function Suggestions() {
+  const [profiles, setProfiles] = useState(null);
+  const {user} = GlobalDataState();
+  console.log("profiles in suggestions", profiles);
+  useEffect(() => {
+    async function getSuggestedProfiles() {
+      try {
+
+        const config = {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+            "Content-type": "application/json",
+          },
+        };
+      
+        //its implied, the jwt token has the id of the loggedin user and we need the following poeple's photos, and this api is for that exactly
+        const { data } = await axios.get(
+          "http://localhost:8001/api/v1/auth/suggested-profiles",
+   
+          config
+        );
+      setProfiles(data);
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+  
+    
+      if (user) {
+        getSuggestedProfiles();
+      }
+    }, [user]);
+    
+
+ 
+  return <>SuggestedProfile</>;
+}
+  // return !profiles ? (
+  //   //TODO:this skeleton is not working too
+  //   <Skeleton count={1} height={150} className="mt-5" />
+  // ) : profiles.length > 0 ? (
+  //   <div className="rounded flex flex-col">
+  //     <div className="text-sm flex items-center align-items justify-between mb-2">
+  //       <p className="font-bold text-gray-base">Suggestions for you</p>
+  //     </div>
+  //     <div className="mt-5 grid gap-5">
+  //       {profiles?.map((profile) => {
+  //         return (
+  //           <SuggestedProfile
+  //             key={profile.docId}
+  //             profileDocId={profile.docId}
+  //             username={profile.username}
+  //             profileId={profile.userId}
+  //             userId={userId}
+  //             loggedInUserDocId={loggedInUserDocId}
+  //           />
+  //         );
+  //       })}
+  //     </div>
+  //   </div>
+  // ) : null;
+
