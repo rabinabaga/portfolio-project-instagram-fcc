@@ -1,9 +1,11 @@
 import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as ROUTES from "../constants/routes";
+import { GlobalDataState } from "../context/GlobalDataProvider";
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const {setUser} = GlobalDataState();
 
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
@@ -19,41 +21,76 @@ export default function SignUp() {
 
   const handleSignup = async (event) => {
     event.preventDefault();
-    const usernameExists = await doesUsernameExist(username);
-    if (!usernameExists) {
-      try {
-        const createdUserResult = await firebase
-          .auth()
-          .createUserWithEmailAndPassword(emailAddress, password);
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+    
+    const { data } = await axios.post(
+      "http://localhost:8001/api/v1/auth/sign-up",
+      { emailAddress, password, fullName, username },
+      config
+    );
+    setUser(data);
+    localStorage.setItem("userInfo", JSON.stringify(data));
+    navigate(ROUTES.DASHBOARD);
+    // const usernameExists = await doesUsernameExist(username);
+    // if (!usernameExists) {
+    //   try {
+    //     const createdUserResult = await firebase
+    //       .auth()
+    //       .createUserWithEmailAndPassword(emailAddress, password);
 
-        //authentication
-        // -> emailAddress and password and username (displayName)
-        await createdUserResult.user.updateProfile({
-          displayName: username,
-        });
+    //     //authentication
+    //     // -> emailAddress and password and username (displayName)
+    //     await createdUserResult.user.updateProfile({
+    //       displayName: username,
+    //     });
 
-        //firebase user collection (create a document)
-        await firebase.firestore().collection("users").add({
-          userId: createdUserResult.user.uid,
-          username: username.toLowerCase(),
-          fullName,
-          emailAddres: emailAddress.toLowerCase(),
-          following: [],
-          dateCreated: Date.now(),
-        });
-        navigate(ROUTES.DASHBOARD)
-      } catch (error) {
-        setError(error.message)
-        setEmailAddress('');
-        setPassword(''),
-        setFullName(''),
-        setUsername('')
-      }
-    }else{
-      setEmailAddress('');
-      setPassword(''),
-      setFullName(''),
-      setUsername('')
+    //     //firebase user collection (create a document)
+    //     await firebase.firestore().collection("users").add({
+    //       userId: createdUserResult.user.uid,
+    //       username: username.toLowerCase(),
+    //       fullName,
+    //       emailAddres: emailAddress.toLowerCase(),
+    //       following: [],
+    //       dateCreated: Date.now(),
+    //     });
+    //     navigate(ROUTES.DASHBOARD)
+    //   } catch (error) {
+    //     setError(error.message)
+    //     setEmailAddress('');
+    //     setPassword(''),
+    //     setFullName(''),
+    //     setUsername('')
+    //   }
+    // }else{
+    //   setEmailAddress('');
+    //   setPassword(''),
+    //   setFullName(''),
+    //   setUsername('')
+    // }
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+
+      const { data } = await axios.post(
+        "http://localhost:8001/api/v1/auth/login",
+        { emailAddress, password },
+        config
+      );
+      setUser(data);
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      navigate(ROUTES.DASHBOARD);
+    } catch (error) {
+      console.log("error", error);
+      setEmailAddress("");
+      setPassword("");
+      setError(error.message);
     }
   };
 
@@ -65,13 +102,13 @@ export default function SignUp() {
     <div className="container mx-auto flex items-center h-screen max-w-screen-md">
       <div className="flex flex-col w-3/5">
         <img
-          src="/images/iphone-with-profile.jpg"
+          src="/imges/iphone-with-profile.jpg"
           alt="iphone with profile picture"
         />
       </div>
       <div className="flex flex-col w-2/5  justify-center p-2  rounded">
         <div className="flex flex-col w-full mb-4  shadow-lg bg-white p-3">
-          <img src="/images/logo.png" alt="instagram logo" />
+          <img src="/imges/logo.png" alt="instagram logo" />
           {error && <p className="text-red-primary">{error}</p>}
           <form className="flex flex-col" action="" onSubmit={handleSignup}>
             <input

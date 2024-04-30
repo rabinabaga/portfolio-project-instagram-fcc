@@ -34,13 +34,55 @@ class AuthController {
   }
 
   async getSuggestedProfiles(req, res, next) {
-    const { following } = await UserModel.find({ _id: req.user._id });
-    const result = await UserModel.find({ _id: { $nin: following } }).limit(10);
+    console.log(req.user._id);
+    const user = await UserModel.find({ _id: req.user._id });
+    const { following } = user[0];
+
+    let result = [];
+    result = await UserModel.find({
+      _id: { $nin: [req.user._id, ...following] },
+    }).limit(10);
+    console.log("result", result);
     if (result) {
       res.status(200).json({
-        data:result,
-        msg:"suggested profiles fetched successfully",
-      })
+        data: result,
+        msg: "suggested profiles fetched successfully",
+      });
+    }
+  }
+
+  async updateLoggedInUserFollowing(req, res, next) {
+    console.log(req.body);
+    const result = await UserModel.findOneAndUpdate(
+      { _id: req.user._id },
+      { $push: { following: req.body.profileDocId } },
+      {
+        new: true,
+      }
+    );
+    console.log("updateLoggedInUserFollowing", result);
+
+    if (result) {
+      res.status(200).json({
+        data: result,
+        msg: "following array updated successfully",
+      });
+    }
+  }
+
+  async updateFollowedUserFollowers(req, res, next) {
+    const result = await UserModel.findOneAndUpdate(
+      { _id: req.body.profileDocId },
+      { $push: { followers: req.user._id } },
+      {
+        new: true,
+      }
+    );
+    if (result) {
+      res.status(200).json({
+        data: result,
+        msg: "following array updated successfully",
+      });
     }
   }
 }
