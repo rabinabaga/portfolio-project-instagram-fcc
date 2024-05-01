@@ -37,9 +37,9 @@ class PhotosController {
       .then((photos) => {
         const photos_w_userLikedPhoto = photos.map((pic)=>{
           if(pic.likes?.username===username){
-            return {...pic, userLikedPhoto:true, username:pic.likes?.username || ""}
+            return {...pic, userLikedPhoto:true, username:pic.userDocId.username || ""}
           }else{
-            return {...pic, userLikedPhoto:false,username:pic.likes?.username || ""}
+            return {...pic, userLikedPhoto:false,username:pic.userDocId.username || ""}
 
           }
         })
