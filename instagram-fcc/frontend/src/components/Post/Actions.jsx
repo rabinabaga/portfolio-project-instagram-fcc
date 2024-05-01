@@ -1,7 +1,9 @@
 import { PropTypes } from "prop-types";
 import { useContext } from "react";
 import { useState } from "react";
+
 import { GlobalDataState } from "../../context/GlobalDataProvider";
+import axios from "axios";
 
 export default function Actions({
   docId,
@@ -16,7 +18,6 @@ export default function Actions({
   //   user: { uid: userId = "" },
   // } = useContext(UserContext);
   const { user } = GlobalDataState();
-
   // const { firebase, FieldValue } = useContext(FirebaseContext);
 
   const handleToggleLiked = async () => {
@@ -39,16 +40,17 @@ export default function Actions({
           {
             docId,
             username: user.username,
-            toggleUser: toggleLiked ? true : false,
+            toggleUser: toggleLiked ? false : true,
           },
           config
         );
-        const updatedPhoto = data.data;
-        setPhotos(data);
+console.log("photo update", data.data);
       } catch (error) {
         console.log("error", error);
       }
     }
+
+    updatePhoto();
 
     // await firebase
     //   .firestore()
