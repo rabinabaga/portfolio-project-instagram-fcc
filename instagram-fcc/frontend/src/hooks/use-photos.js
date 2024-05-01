@@ -1,16 +1,19 @@
 import { useEffect } from "react";
-
+import axios from "axios";
 import { useState } from "react";
 import { GlobalDataState } from "../context/GlobalDataProvider";
 
 export default function usePhotos() {
   const [photos, setPhotos] = useState([]);
   const { user } = GlobalDataState();
+  console.log("photos in use photos", photos);
 
   useEffect(() => {
     async function getTimelinePhotos() {
+      console.log(user);
       const following = user?.following;
-      let followedUserPhotos = [];
+      console.log(following);
+      let followedUserPhotos;
 
       async function getPhotos() {
         try {
@@ -21,12 +24,13 @@ export default function usePhotos() {
           };
 
           //its implied, the jwt token has the id of the loggedin user and we need the following poeple's photos, and this api is for that exactly
-          const followedUserPhotos = await axios.get(
-            "http://localhost:8001/api/v1/photos/getPhotos",
+          followedUserPhotos = await axios.get(
+            "http://localhost:8001/api/v1/photos/get-photos",
 
             config
           );
-          setPhotos(followedUserPhotos.data);
+          const data = followedUserPhotos.data.data;
+          setPhotos(data);
         } catch (error) {
           console.log("error", error);
         }
@@ -36,8 +40,7 @@ export default function usePhotos() {
         followedUserPhotos = await getPhotos();
       }
 
-      followedUserPhotos.sort((a, b) => b.createdAt - a.createdAt);
-      setPhotos(followedUserPhotos);
+      // followedUserPhotos.sort((a, b) => b.createdAt - a.createdAt);
     }
     getTimelinePhotos();
   }, [user]);

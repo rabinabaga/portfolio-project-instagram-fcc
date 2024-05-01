@@ -1,9 +1,7 @@
 import PropTypes from "prop-types";
 import { useState, useContext } from "react";
-import UserContext from "../../context/user";
+import { GlobalDataState } from "../../context/GlobalDataProvider";
 
-import FirebaseContext from "../../context/firebase";
-import useUser from "../../hooks/use-user";
 
 export default function AddComment({
   docId,
@@ -12,8 +10,7 @@ export default function AddComment({
   commentInput,
 }) {
   const [comment, setComment] = useState("");
-  const { firebase, FieldValue } = useContext(FirebaseContext);
-  const { user } = useUser();
+  const { user } = GlobalDataState();
   const handleSubmitComment = (event) => {
     event.preventDefault();
     setComments([{ displayName: user?.username, comment }, ...comments]);
@@ -67,9 +64,9 @@ export default function AddComment({
   );
 }
 
-AddComment.propTypes = {
-  docId: PropTypes.string.isRequired,
-  comments: PropTypes.array.isRequired,
-  setComments: PropTypes.func.isRequired,
-  commentInput: PropTypes.object.isRequired,
-};
+// AddComment.propTypes = {
+//   docId: PropTypes.string.isRequired,
+//   comments: PropTypes.array.isRequired,
+//   setComments: PropTypes.func.isRequired,
+//   commentInput: PropTypes.object.isRequired,
+// };

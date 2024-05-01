@@ -40,7 +40,7 @@ export default function Comments({
         commentInput={commentInput}
       ></AddComment>
       <p className="text-gray-base uppercase text-xs p-4 pt-2 pb-0 mt-2 mb-4">
-        {formatDistance(posted, new Date())} ago
+        {/* {formatDistance(posted, new Date())} ago */}
       </p>
     </>
   );

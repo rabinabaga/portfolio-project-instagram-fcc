@@ -1,8 +1,7 @@
 import { PropTypes } from "prop-types";
-import FirebaseContext from "../../context/firebase";
-import UserContext from "../../context/user";
 import { useContext } from "react";
 import { useState } from "react";
+import { GlobalDataState } from "../../context/GlobalDataProvider";
 
 export default function Actions({
   docId,
@@ -13,26 +12,27 @@ export default function Actions({
   const [toggleLiked, setToggleLiked] = useState(likedPhoto);
 
   const [likes, setLikes] = useState(totalLikes);
-  const {
-    user: { uid: userId = "" },
-  } = useContext(UserContext);
+  // const {
+  //   user: { uid: userId = "" },
+  // } = useContext(UserContext);
+  const {user} = GlobalDataState();
 
-  const { firebase, FieldValue } = useContext(FirebaseContext);
+  // const { firebase, FieldValue } = useContext(FirebaseContext);
 
   const handleToggleLiked = async () => {
     setToggleLiked((toggleLiked) => !toggleLiked);
 
-    await firebase
-      .firestore()
-      .collection("photos")
-      .doc(docId)
-      .update({
-        likes: toggleLiked
-          ? FieldValue.arrayRemove(userId)
-          : FieldValue.arrayUnion(userId),
-      });
+    // await firebase
+    //   .firestore()
+    //   .collection("photos")
+    //   .doc(docId)
+    //   .update({
+    //     likes: toggleLiked
+    //       ? FieldValue.arrayRemove(userId)
+    //       : FieldValue.arrayUnion(userId),
+    //   });
 
-    setLikes((likes) => (toggleLiked ? likes - 1 : likes + 1));
+    // setLikes((likes) => (toggleLiked ? likes - 1 : likes + 1));
   };
 
   return (

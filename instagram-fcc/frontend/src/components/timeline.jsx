@@ -1,11 +1,12 @@
 import usePhotos from "../hooks/use-photos";
 import Skeleton from 'react-loading-skeleton'
-// import Post from "./Post";
+import Post from "./Post";
 
 export default function Timeline() {
   //  we need to get the logged in user's following's photos ( hook)
 
   const { photos } = usePhotos();
+  console.log("photos", photos)
 
   // on loading the photos, we need to use react skeleton
 
@@ -17,7 +18,7 @@ export default function Timeline() {
     //TODO1: when photos not loaded, show the skeleton instead of follow to see photos text
     <div className="container col-span-2">
       {!photos ? (
-        <Skeleton key={index} count={1} width={320} height={400} />
+        <Skeleton count={1} width={320} height={400} />
       ) : photos?.length > 0 ? (
         photos.map((content) => {
           return <Post key={content._id} content={content}></Post>;
