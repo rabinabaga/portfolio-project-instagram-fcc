@@ -15,7 +15,7 @@ class PhotosController {
     if (req.user) {
       createdPhoto = await PhotoModel.create({
         ...req.body,
-        userDocId: req.user._id,
+       
       });
     }
     res.status(200).json({
@@ -29,22 +29,23 @@ class PhotosController {
     const { following,username } = user[0];
     console.log("following", following);
     PhotoModel.find({ userDocId: { $in: following } })
-      .populate("likes") // Use single quotes for consistency
+      .populate("likes")
+      .populate("userDocId") // Use single quotes for consistency
       .limit(10)
       .sort({ _id: -1 }) // Sort by most recent (descending)
       .lean() // Improve performance for large datasets (optional)
-      .then((photos) => {d
+      .then((photos) => {
         const photos_w_userLikedPhoto = photos.map((pic)=>{
           if(pic.likes?.username===username){
-            return {...pic, userLikedPhoto:true, username:username}
+            return {...pic, userLikedPhoto:true, username:pic.likes?.username || ""}
           }else{
-            return {...pic, userLikedPhoto:false,username:username}
+            return {...pic, userLikedPhoto:false,username:pic.likes?.username || ""}
 
           }
         })
         res.status(200).json({
-          data: photos_w_userLikePhoto,
-          msg: "photo with likes populated successfully",
+          data: photos_w_userLikedPhoto,
+          msg: "photo with userLikedPhoto and username populated successfully",
         });
       })
       .catch((err) => {

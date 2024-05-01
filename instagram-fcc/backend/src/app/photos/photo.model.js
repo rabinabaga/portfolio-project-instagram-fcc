@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
+const UserModel = require("../auth/user.model");
 const Schema = mongoose.Schema;
+UserModel
 
 const likeSchema = new Schema({
   username: { type: String, required: true },
@@ -12,12 +14,7 @@ const CommentSchema = new Schema({
 
 const PhotoSchema = new Schema(
   {
-    userDocId: {
-      type: String,
-      required: true,
-      min: 2,
-      max: 50,
-    },
+    userDocId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     imageSrc: {
       type: String,
       required: true,
