@@ -6,13 +6,10 @@ import { GlobalDataState } from "../context/GlobalDataProvider";
 export default function usePhotos() {
   const [photos, setPhotos] = useState([]);
   const { user } = GlobalDataState();
-  console.log("photos in use photos", photos);
 
   useEffect(() => {
     async function getTimelinePhotos() {
-      console.log(user);
       const following = user?.following;
-      console.log(following);
       let followedUserPhotos;
 
       async function getPhotos() {
