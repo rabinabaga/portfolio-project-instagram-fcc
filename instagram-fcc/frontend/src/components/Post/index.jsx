@@ -15,7 +15,7 @@ export default function Post({ content }) {
       <Header username={content.username}></Header>
       <Image src={content.imageSrc} caption={content.caption}></Image>
       <Actions
-        docId={content.docId}
+        docId={content._id}
         totalLikes={content.likes.length}
         likedPhoto={content.userLikedPhoto}
         handleFocus={handleFocus}

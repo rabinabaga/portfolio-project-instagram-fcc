@@ -37,7 +37,13 @@ const PhotoSchema = new Schema(
 );
 
 
+
+
+
 const CommentModel = mongoose.model('Comment', CommentSchema);
 const LikeModel = mongoose.model('Like', likeSchema);
 const PhotoModel = mongoose.model("Photo", PhotoSchema);
-module.exports = PhotoModel;
+module.exports = {
+  PhotoModel: PhotoModel,
+  LikeModel: LikeModel
+};
