@@ -4,8 +4,7 @@ const { LikeModel } = require("./photo.model");
 
 class PhotosController {
   async getAllPhotos(req, res, next) {
-    // const createdPhoto = await PhotoModel.create(req.body);
-    // console.log(createdUser.fullName);
+  
     res.status(400).json({
       user: req.user,
     });
@@ -27,7 +26,6 @@ class PhotosController {
   async getPhotos(req, res, next) {
     const user = await UserModel.find({ _id: req.user._id });
     const { following, username } = user[0];
-    console.log("following", following);
     PhotoModel.find({ userDocId: { $in: following } })
       .populate("likes")
       .populate("userDocId") // Use single quotes for consistency
@@ -36,9 +34,7 @@ class PhotosController {
       .lean() // Improve performance for large datasets (optional)
       .then((photos) => {
         const photos_w_userLikedPhoto = photos.map((pic) => {
-          console.log("pic", pic);
           if (pic.likes.some((like) => like.username === username)) {
-            console.log("here");
             return {
               ...pic,
               userLikedPhoto: true,
@@ -70,9 +66,7 @@ class PhotosController {
           const likeObject = await LikeModel.find({
             username: req.body.username,
           });
-          console.log("likesobject", likeObject);
           const { _id } = likeObject[0];
-          console.log("id of liked object", _id);
           result = await PhotoModel.findOneAndUpdate(
             { _id: req.body.docId },
             { $pull: { likes: _id } },
@@ -92,13 +86,11 @@ class PhotosController {
             msg: "liking photo failed",
           });
         }
-        console.log("when toggleuser false");
       } else {
         try {
           const likedObject = await LikeModel.create({
             username: req.body.username,
           });
-          console.log("id of liked object", likedObject._id);
 
           result = await PhotoModel.findOneAndUpdate(
             { _id: req.body.docId },

@@ -22,7 +22,6 @@ export default function Actions({
 
   const handleToggleLiked = async () => {
     setLikes((likes) => (toggleLiked ? likes - 1 : likes + 1));
-    console.log("here", likes);
 
     setToggleLiked((toggleLiked) => !toggleLiked);
     async function updatePhoto() {
@@ -44,7 +43,6 @@ export default function Actions({
           },
           config
         );
-console.log("photo update", data.data);
       } catch (error) {
         console.log("error", error);
       }

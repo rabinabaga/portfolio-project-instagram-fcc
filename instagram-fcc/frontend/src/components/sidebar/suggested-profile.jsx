@@ -38,7 +38,6 @@ export default function SuggestedProfile({
           { profileDocId: profileDocId, isFollowingProfile: false },
           config
         );
-        console.log(data);
       } catch (error) {
         console.log("error", error);
       }
