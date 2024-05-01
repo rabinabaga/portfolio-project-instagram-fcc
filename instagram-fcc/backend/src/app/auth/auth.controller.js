@@ -4,7 +4,6 @@ const generateToken = require("./helpers");
 class AuthController {
   async signUp(req, res, next) {
     const createdUser = await UserModel.create(req.body);
-    console.log(createdUser.fullName);
     res.status(200).json(createdUser);
   }
 
@@ -34,7 +33,6 @@ class AuthController {
   }
 
   async getSuggestedProfiles(req, res, next) {
-    console.log(req.user._id);
     const user = await UserModel.find({ _id: req.user._id });
     const { following } = user[0];
 
@@ -42,7 +40,6 @@ class AuthController {
     result = await UserModel.find({
       _id: { $nin: [req.user._id, ...following] },
     }).limit(10);
-    console.log("result", result);
     if (result) {
       res.status(200).json({
         data: result,
@@ -52,7 +49,6 @@ class AuthController {
   }
 
   async updateLoggedInUserFollowing(req, res, next) {
-    console.log(req.body);
     const result = await UserModel.findOneAndUpdate(
       { _id: req.user._id },
       { $push: { following: req.body.profileDocId } },
@@ -60,7 +56,6 @@ class AuthController {
         new: true,
       }
     );
-    console.log("updateLoggedInUserFollowing", result);
 
     if (result) {
       res.status(200).json({
