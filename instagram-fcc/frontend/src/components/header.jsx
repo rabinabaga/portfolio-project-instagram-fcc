@@ -4,10 +4,22 @@ import { GlobalDataState } from "../context/GlobalDataProvider";
 
 import * as ROUTES from "../constants/routes";
 // import { DEFAULT_IMAGE_PATH } from '../constants/paths';
+import socketIO from 'socket.io-client';
+const socket = socketIO.connect('http://localhost:8001');
 
 export default function Header() {
   const { user, setUser } = GlobalDataState() || {};
   const navigate = useNavigate();
+
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+      socket.emit('message', {
+        text: "message",
+        id: `${socket.id}${Math.random()}`,
+        socketID: socket.id,
+      });
+  };
+
 
   return (
     <header className="h-16 bg-white border-b border-gray-primary mb-8">
@@ -74,6 +86,7 @@ export default function Header() {
                     />
                   </svg>
                 </button>
+                <button onClick={handleSendMessage}>Click me to send a message</button>
                 {user && (
                   <div className="flex items-center cursor-pointer">
                     <Link to={`/p/${user?.username}`}>
