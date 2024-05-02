@@ -33,7 +33,7 @@ export default function usePhotos() {
         }
       }
       //does the user acutally follow people
-      if (following.length > 0) {
+      if (following?.length > 0) {
         followedUserPhotos = await getPhotos();
       }
 

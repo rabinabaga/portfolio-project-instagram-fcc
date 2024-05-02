@@ -1,24 +1,39 @@
-import { useContext } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { GlobalDataState } from "../context/GlobalDataProvider";
 
 import * as ROUTES from "../constants/routes";
-// import { DEFAULT_IMAGE_PATH } from '../constants/paths';
-import socketIO from 'socket.io-client';
-const socket = socketIO.connect('http://localhost:8001');
+import { createSocketConnection } from '../context/socket';  // import { DEFAULT_IMAGE_PATH } from '../constants/paths';
+
 
 export default function Header() {
+  const socketRef = useRef(null);
   const { user, setUser } = GlobalDataState() || {};
   const navigate = useNavigate();
 
   const handleSendMessage = (e) => {
     e.preventDefault();
-      socket.emit('message', {
-        text: "message",
-        id: `${socket.id}${Math.random()}`,
-        socketID: socket.id,
-      });
+      // socket.emit('message', {
+      //   text: "message",
+      //   id: `${socket.id}${Math.random()}`,
+      //   socketID: socket.id,
+      // });
   };
+  useEffect(() => {
+    socketRef.current = createSocketConnection('http://localhost:8001');  // Call the function
+
+    socketRef.current.on('connect', () => {
+      socketRef.current.emit('message', {
+        text: "message",
+     id:socketRef.current.id
+      });
+    });
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
+    };
+  })
 
 
   return (
