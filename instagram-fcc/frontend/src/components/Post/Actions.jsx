@@ -43,6 +43,23 @@ export default function Actions({
           },
           config
         );
+         const socketRef = useRef(null);
+
+  useEffect(()=>{
+    socketRef.current = createSocketConnection('http://localhost:8001');  // Call the function
+
+    socketRef.current.on('connect', () => {
+      socketRef.current.emit('message', {
+        text: "message",
+     id:socketRef.current.id
+      });
+    });
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
+    };
+  })
       } catch (error) {
         console.log("error", error);
       }

@@ -11,7 +11,7 @@ class AuthController {
     const { email, password } = req.body;
     // "email": "akhada@gmail.com",
     //   "password":"1612$ten"
-    const user = await UserModel.findOne({ email: "akhada@gmail.com" });
+    const user = await UserModel.findOne({ email: email });
     if (user && (await user.matchPassword(password))) {
       res.status(200).json({
         _id: user._id,
