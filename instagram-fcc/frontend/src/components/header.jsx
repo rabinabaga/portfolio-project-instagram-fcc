@@ -3,13 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { GlobalDataState } from "../context/GlobalDataProvider";
 
 import * as ROUTES from "../constants/routes";
-import { createSocketConnection } from '../context/socket';  // import { DEFAULT_IMAGE_PATH } from '../constants/paths';
 
 
 export default function Header() {
-  const socketRef = useRef(null);
   const { user, setUser } = GlobalDataState() || {};
   const navigate = useNavigate();
+  
 
   const handleSendMessage = (e) => {
     e.preventDefault();
@@ -19,21 +18,7 @@ export default function Header() {
       //   socketID: socket.id,
       // });
   };
-  useEffect(() => {
-    socketRef.current = createSocketConnection('http://localhost:8001');  // Call the function
 
-    socketRef.current.on('connect', () => {
-      socketRef.current.emit('message', {
-        text: "message",
-     id:socketRef.current.id
-      });
-    });
-    return () => {
-      if (socketRef.current) {
-        socketRef.current.disconnect();
-      }
-    };
-  })
 
 
   return (
@@ -101,8 +86,7 @@ export default function Header() {
                     />
                   </svg>
                 </button>
-                <button onClick={handleSendMessage}>Click me to send a message</button>
-                {user && (
+                           {user && (
                   <div className="flex items-center cursor-pointer">
                     <Link to={`/p/${user?.username}`}>
                       <img

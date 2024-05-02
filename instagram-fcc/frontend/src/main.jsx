@@ -5,9 +5,9 @@ import './index.css'
 import GlobalDataProvider from './context/GlobalDataProvider'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+  
    <GlobalDataProvider>
     <App/>
    </GlobalDataProvider>
-  </React.StrictMode>,
+  
 )
