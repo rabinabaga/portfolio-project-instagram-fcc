@@ -50,7 +50,7 @@ export default function Actions({
             message: "a photo has been liked by this user",
             userId: user._id,
             socketID: socket.id,
-            photoUserId: "662fdcacd6883005eaeaf6df",
+            photoUserId: data.data.userDocId,
           });
          }
       } catch (err) {
@@ -62,7 +62,9 @@ export default function Actions({
   }
 
   useEffect(() => {
+    console.log("here");
     if (socket) {
+      console.log("here inside socket");
       socket.on("notification", (data) => {
         console.log("received notification", data);
       });
@@ -73,7 +75,7 @@ export default function Actions({
         }
       };
     }
-  }, [socket]);
+  }, []);
 
 
 

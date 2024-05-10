@@ -12,6 +12,7 @@ export default function Dashboard() {
 useEffect(()=>{
     if (socket) {
       console.log("user in dashboard", user);
+      console.log("frontend", user._id, socket.id);
       socket.emit("loggedIn", {userId:user._id, socketID:socket.id})
 
       return () => {

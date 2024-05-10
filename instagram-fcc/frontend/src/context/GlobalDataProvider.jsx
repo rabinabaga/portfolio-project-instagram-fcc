@@ -5,6 +5,7 @@ const GlobalDataContext = createContext();
 
 const GlobalDataProvider = ({ children }) => {
   const [user, setUser] = useState();
+  const [socketConnected, setSocketConnected] = useState(false);
   // const [notification, setNotification] = useState([]);
 
   useEffect(() => {
@@ -23,6 +24,8 @@ const GlobalDataProvider = ({ children }) => {
         // selectedChat,
         // setSelectedChat,
         user,
+        socketConnected,
+        setSocketConnected,
         setUser,
         // notification,
         // setNotification,

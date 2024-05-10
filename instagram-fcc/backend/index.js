@@ -9,14 +9,17 @@ const users = {};
 socketIO.on("connection", (socket) => {
   console.log(`⚡: ${socket.id} user just connected!`);
 socket.on("loggedIn",(data)=>{
-  console.log("data in loggedin ",data);
+  console.log("data in loggedin ",data.userId, data.socketID);
+  users[data.userId] = socket.id;
+  console.log("users", users);
 })
 
   socket.on("userLikedPhoto", (data) => {
+    console.log("data after user liked photo", data);
     users[data.userId] = socket.id;
     users[data.photoUserId] = data.socketID
-    console.log("userLikedPhoto",data);
-    console.log(users);
+    console.log("userLikedPhoto",data.photoUserId);
+  
     socket.to(users[data.photoUserId]).emit("notification", "your photo has been liked");
   });
   // io.emit('message', `${socket.id.substr(0,2)} said ${message}`)
