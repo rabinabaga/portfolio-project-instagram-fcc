@@ -8,14 +8,14 @@ const users = {};
 //event connection of a client from the frontend
 socketIO.on("connection", (socket) => {
   console.log(`⚡: ${socket.id} user just connected!`);
+socket.on("loggedIn",(data)=>{
+  console.log("data in loggedin ",data);
+})
 
-  socket.on("message", (data) => {
-    console.log(data);
-    socketIO.emit("messageResponse", data);
-  });
-  socket.on("hook-socket", (data) => {
+  socket.on("userLikedPhoto", (data) => {
     users[data.userId] = socket.id;
-    console.log(data);
+    users[data.photoUserId] = data.socketID
+    console.log("userLikedPhoto",data);
     console.log(users);
     socket.to(users[data.photoUserId]).emit("notification", "your photo has been liked");
   });

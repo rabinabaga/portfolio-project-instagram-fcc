@@ -1,9 +1,10 @@
 import { PropTypes } from "prop-types";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useState } from "react";
 
 import { GlobalDataState } from "../../context/GlobalDataProvider";
 import axios from "axios";
+import { useSocket } from "../../context/socket";
 
 export default function Actions({
   docId,
@@ -11,14 +12,14 @@ export default function Actions({
   handleFocus,
   totalLikes,
 }) {
+  const socket = useSocket();
+
   const [toggleLiked, setToggleLiked] = useState(likedPhoto);
 
   const [likes, setLikes] = useState(totalLikes);
-  // const {
-  //   user: { uid: userId = "" },
-  // } = useContext(UserContext);
+
   const { user } = GlobalDataState();
-  // const { firebase, FieldValue } = useContext(FirebaseContext);
+  console.log("user in actions", user);
 
   const handleToggleLiked = async () => {
     setLikes((likes) => (toggleLiked ? likes - 1 : likes + 1));
@@ -32,8 +33,7 @@ export default function Actions({
           },
         };
 
-        //its implied, the jwt token has the id of the loggedin user and we need the following poeple's photos, and this api is for that exactly
-        //if true is send, add the user to the array, if false remove the user fromt the array
+
         const { data } = await axios.post(
           "http://localhost:8001/api/v1/photos/update-photo",
           {
@@ -43,42 +43,40 @@ export default function Actions({
           },
           config
         );
-         const socketRef = useRef(null);
-
-  useEffect(()=>{
-    socketRef.current = createSocketConnection('http://localhost:8001');  // Call the function
-
-    socketRef.current.on('connect', () => {
-      socketRef.current.emit('message', {
-        text: "message",
-     id:socketRef.current.id
-      });
-    });
-    return () => {
-      if (socketRef.current) {
-        socketRef.current.disconnect();
-      }
-    };
-  })
-      } catch (error) {
-        console.log("error", error);
+        console.log("data in update photo", data);
+         if (socket) {
+          console.log("socket present in actions");
+          socket.emit("userLikedPhoto", {
+            message: "a photo has been liked by this user",
+            userId: user._id,
+            socketID: socket.id,
+            photoUserId: "662fdcacd6883005eaeaf6df",
+          });
+         }
+      } catch (err) {
+        console.log("error in update photo", err);
       }
     }
-
     updatePhoto();
+   
+  }
 
-    // await firebase
-    //   .firestore()
-    //   .collection("photos")
-    //   .doc(docId)
-    //   .update({
-    //     likes: toggleLiked
-    //       ? FieldValue.arrayRemove(userId)
-    //       : FieldValue.arrayUnion(userId),
-    //   });
+  useEffect(() => {
+    if (socket) {
+      socket.on("notification", (data) => {
+        console.log("received notification", data);
+      });
 
-    // setLikes((likes) => (toggleLiked ? likes - 1 : likes + 1));
-  };
+      return () => {
+        if (socket) {
+          socket.off("notification"); // Unsubscribe from specific event
+        }
+      };
+    }
+  }, [socket]);
+
+
+
 
   return (
     <>
@@ -96,9 +94,8 @@ export default function Actions({
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            className={`w-6 h-6 mr-4 select-none cursor-pointer ${
-              toggleLiked ? "fill-red text-red-primary" : "text-black-light"
-            }`}
+            className={`w-6 h-6 mr-4 select-none cursor-pointer ${toggleLiked ? "fill-red text-red-primary" : "text-black-light"
+              }`}
           >
             <path
               stroke-linecap="round"
@@ -135,11 +132,12 @@ export default function Actions({
       </div>
     </>
   );
+
 }
 
-Actions.propTypes = {
-  docId: PropTypes.string.isRequired,
-  likedPhoto: PropTypes.bool.isRequired,
-  //   handleFocus: PropTypes.func.isRequired,
-  totalLikes: PropTypes.number.isRequired,
-};
+// Actions.propTypes = {
+//   docId: PropTypes.string.isRequired,
+//   likedPhoto: PropTypes.bool.isRequired,
+//   //   handleFocus: PropTypes.func.isRequired,
+//   totalLikes: PropTypes.number.isRequired,
+// };

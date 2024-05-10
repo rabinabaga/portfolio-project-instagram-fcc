@@ -11,17 +11,27 @@ export default function Post({ content }) {
   const handleFocus = () => commentInput.current.focus();
   return (
     <div className="rounded col-span-4 border bg-white border-gray-primary mb-12">
-      
       <Header username={content.username}></Header>
       <Image src={content.imageSrc} caption={content.caption}></Image>
+      {/* <Actions
+        docId={content._id}
+        totalLikes={content.likes.length}
+        likedPhoto={content.userLikedPhoto}
+        handleFocus={handleFocus}
+      ></Actions> */}
       <Actions
         docId={content._id}
         totalLikes={content.likes.length}
         likedPhoto={content.userLikedPhoto}
         handleFocus={handleFocus}
-      ></Actions>
+      />
       <Footer username={content.username} caption={content.caption}></Footer>
-      <Comments docId={content.docId} comments={content.comments} posted={content.dateCreated} commentInput={commentInput}></Comments>
+      <Comments
+        docId={content.docId}
+        comments={content.comments}
+        posted={content.dateCreated}
+        commentInput={commentInput}
+      ></Comments>
     </div>
   );
 }
