@@ -4,28 +4,20 @@ import Sidebar from "../components/sidebar";
 import Timeline from "../components/timeline";
 import { useSocket } from "../context/socket";
 import { GlobalDataState } from "../context/GlobalDataProvider";
-
-
+var socket;
+import io from "socket.io-client";
+const ENDPOINT = "http://localhost:8001";
 export default function Dashboard() {
-  const {user} = GlobalDataState();
-  const socket = useSocket();
-useEffect(()=>{
-    if (socket) {
-      console.log("user in dashboard", user);
-      console.log("frontend", user._id, socket.id);
-      socket.emit("loggedIn", {userId:user._id, socketID:socket.id})
+  const { user } = GlobalDataState();
+  console.log("user in dashboard", user);
 
-      return () => {
-        if (socket) {
-          socket.off("notification"); // Unsubscribe from specific event
-        }
-      };
-    }
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    console.log("here");
+    socket.emit("setup", user);
+    socket.on("connected", console.log("socket connected successfully"));
+  }, [user]);
 
-},[socket])
- //see if user is here,
- //if present, get the instance of socket,
- //and send socketID and loggedinuser id
   return (
     <>
       <Header></Header>

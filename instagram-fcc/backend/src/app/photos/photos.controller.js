@@ -98,7 +98,14 @@ class PhotosController {
             {
               new: true,
             }
-          );
+          ).populate("userDocId","-password")
+         result = await UserModel.populate(result,{
+          path:"likes",
+          populate:{
+            path:"username",
+            select:"username"
+          }
+         })
           res.status(200).json({
             data: result,
             msg: "photo updated  successfully",

@@ -11,14 +11,14 @@ export const useSocket = () => useContext(SocketContext);
 export const SocketProvider = ({ url, children }) => {
   const [socket, setSocket] = useState(null);
 
-  useEffect(() => {
-    const newSocket = io(url);
-setSocket(newSocket);
-    // Clean up function to disconnect the socket when the component unmounts
-    return () => {
-      newSocket.disconnect();
-    };
-  }, [url]);
+  // useEffect(() => {
+  //   const newSocket = io(url);
+  //   setSocket(newSocket);
+  //   // Clean up function to disconnect the socket when the component unmounts
+  //   return () => {
+  //     newSocket.disconnect();
+  //   };
+  // }, [url]);
 
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>

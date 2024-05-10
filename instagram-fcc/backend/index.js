@@ -3,35 +3,25 @@ dotenv.config();
 const app = require("./src/config/express.config.js");
 const http = require("http").Server(app);
 const socketIO = require("socket.io")(http, { cors: { origin: "*   " } });
-const users = {};
+
 
 //event connection of a client from the frontend
 socketIO.on("connection", (socket) => {
-  console.log(`⚡: ${socket.id} user just connected!`);
-socket.on("loggedIn",(data)=>{
-  console.log("data in loggedin ",data.userId, data.socketID);
-  users[data.userId] = socket.id;
-  console.log("users", users);
-})
-
+  socket.on("setup", (userData) => {
+    console.log("userdata", userData);
+    socket.join(userData?._id);
+    socket.emit("connected");
+    
+  });
+  
   socket.on("userLikedPhoto", (data) => {
     console.log("data after user liked photo", data);
-    users[data.userId] = socket.id;
-    users[data.photoUserId] = data.socketID
-    console.log("userLikedPhoto",data.photoUserId);
-  
-    socket.to(users[data.photoUserId]).emit("notification", "your photo has been liked");
+    socket.in(data.userId).emit("like received", data);
   });
-  // io.emit('message', `${socket.id.substr(0,2)} said ${message}`)
-  socket.on("disconnect", () => {
-    console.log("🔥: A user disconnected");
-    for (const userId in users) {
-      if (users[userId] === socket.id) {
-        delete users[userId];
-        break;
-      }
-    }
-  });
+
+
+
+
 });
 const server_new = http.listen(8001, "0.0.0.0", (err) => {
   if (!err) {

@@ -19,7 +19,7 @@ export default function Actions({
   const [likes, setLikes] = useState(totalLikes);
 
   const { user } = GlobalDataState();
-  console.log("user in actions", user);
+  
 
   const handleToggleLiked = async () => {
     setLikes((likes) => (toggleLiked ? likes - 1 : likes + 1));
@@ -33,7 +33,6 @@ export default function Actions({
           },
         };
 
-
         const { data } = await axios.post(
           "http://localhost:8001/api/v1/photos/update-photo",
           {
@@ -44,41 +43,23 @@ export default function Actions({
           config
         );
         console.log("data in update photo", data);
-         if (socket) {
+        if (socket) {
           console.log("socket present in actions");
-          socket.emit("userLikedPhoto", {
-            message: "a photo has been liked by this user",
-            userId: user._id,
-            socketID: socket.id,
-            photoUserId: data.data.userDocId,
-          });
-         }
+          socket.emit("userLikedPhoto", data.data);
+        }
       } catch (err) {
         console.log("error in update photo", err);
       }
     }
     updatePhoto();
-   
-  }
+  };
 
   useEffect(() => {
-    console.log("here");
-    if (socket) {
-      console.log("here inside socket");
-      socket.on("notification", (data) => {
-        console.log("received notification", data);
-      });
 
-      return () => {
-        if (socket) {
-          socket.off("notification"); // Unsubscribe from specific event
-        }
-      };
-    }
+    // socket.on("like received", (data) => {
+    //   console.log("received notification", data);
+    // });
   }, []);
-
-
-
 
   return (
     <>
@@ -96,8 +77,9 @@ export default function Actions({
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            className={`w-6 h-6 mr-4 select-none cursor-pointer ${toggleLiked ? "fill-red text-red-primary" : "text-black-light"
-              }`}
+            className={`w-6 h-6 mr-4 select-none cursor-pointer ${
+              toggleLiked ? "fill-red text-red-primary" : "text-black-light"
+            }`}
           >
             <path
               stroke-linecap="round"
@@ -134,7 +116,6 @@ export default function Actions({
       </div>
     </>
   );
-
 }
 
 // Actions.propTypes = {
