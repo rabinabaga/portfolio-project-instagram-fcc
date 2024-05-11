@@ -13,7 +13,7 @@ function Dashboard() {
     }
   };
   useEffect(() => {
-    socket.on("chat", (msg) => {
+    socket.on("chate", (msg) => {
       setChatMsgs((chatMsgs) => [...chatMsgs, msg]);
     });
   }, []);

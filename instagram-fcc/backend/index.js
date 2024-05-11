@@ -7,10 +7,7 @@ const socketIO = require("socket.io")(http, { cors: { origin: "*   " } });
 //event, connection of a client from the frontend
 socketIO.on("connection", (socket) => {
   console.log("a user is connected");
-  socket.on("hi",(msg) => {
-    socket.join("greeting");
-    socketIO.to('greeting').emit("chat", msg);
-  })
+socketIO.emit("chat", "test message");
    socket.on("disconnect", () => {
      console.log("user disconnected");
    });
