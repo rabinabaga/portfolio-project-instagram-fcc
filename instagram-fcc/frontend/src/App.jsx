@@ -26,10 +26,14 @@ const router = createBrowserRouter([
   //   element: <Notfound />,
   // },
 ]);
+import { socket } from "./socket.js";
+import SocketContext from "./context/socket.js";
 function App() {
   return (
     <>
-      <RouterProvider router={router} />
+      <SocketContext.Provider value={socket.connected}>
+        <RouterProvider router={router} />
+      </SocketContext.Provider>
     </>
   );
 }
