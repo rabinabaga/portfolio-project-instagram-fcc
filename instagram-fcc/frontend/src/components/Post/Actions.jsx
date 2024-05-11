@@ -5,6 +5,7 @@ import { useState } from "react";
 import { GlobalDataState } from "../../context/GlobalDataProvider";
 import axios from "axios";
 import { socket } from "../../socket";
+import SocketContext from "../../context/socket";
 
 export default function Actions({
   docId,
@@ -12,7 +13,7 @@ export default function Actions({
   handleFocus,
   totalLikes,
 }) {
-
+ const { socketConnectionState } = useContext(SocketContext);
   const [toggleLiked, setToggleLiked] = useState(likedPhoto);
 
   const [likes, setLikes] = useState(totalLikes);
@@ -48,7 +49,12 @@ export default function Actions({
     }
     updatePhoto();
   };
-
+ useEffect(() => {
+   socket.on("likeReceived", (msg) => {
+     console.log("like received data", msg);
+   });
+  
+ }, [user, socketConnectionState]);
    
 
   return (
