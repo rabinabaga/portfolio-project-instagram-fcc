@@ -8,9 +8,7 @@ const socketIO = require("socket.io")(http, { cors: { origin: "*   " } });
 //event connection of a client from the frontend
 socketIO.on("connection", (socket) => {
   socket.on("setup", (userData) => {
-    console.log("userdata", userData);
-    socket.join(userData?._id);
-    socket.emit("connected");
+   console.log(userData?.username +"connected successfully");
     
   });
   

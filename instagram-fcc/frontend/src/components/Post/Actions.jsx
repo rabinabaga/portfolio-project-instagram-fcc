@@ -4,7 +4,6 @@ import { useState } from "react";
 
 import { GlobalDataState } from "../../context/GlobalDataProvider";
 import axios from "axios";
-import { useSocket } from "../../context/socket";
 
 export default function Actions({
   docId,
@@ -12,7 +11,6 @@ export default function Actions({
   handleFocus,
   totalLikes,
 }) {
-  const socket = useSocket();
 
   const [toggleLiked, setToggleLiked] = useState(likedPhoto);
 
@@ -43,10 +41,7 @@ export default function Actions({
           config
         );
         console.log("data in update photo", data);
-        if (socket) {
-          console.log("socket present in actions");
-          socket.emit("userLikedPhoto", data.data);
-        }
+        
       } catch (err) {
         console.log("error in update photo", err);
       }
