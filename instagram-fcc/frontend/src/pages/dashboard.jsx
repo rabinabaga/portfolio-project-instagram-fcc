@@ -11,12 +11,15 @@ const ENDPOINT = "http://localhost:8001";
 export default function Dashboard() {
   const { user } = GlobalDataState();
   const { socketConnectionState } = useContext(SocketContext);
-console.log("socketConnection State", socketConnectionState);
+
   useEffect(() => {
+     socket.on("likeReceived", (msg) => {
+       console.log("like received data", msg);
+     });
     if (user && socketConnectionState) {
       socket.emit("setup", user);
     }
-  }, [user]);
+  }, [user, socketConnectionState]);
 
   return (
     <>
