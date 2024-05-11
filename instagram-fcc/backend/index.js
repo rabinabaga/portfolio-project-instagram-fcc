@@ -8,8 +8,8 @@ const socketIO = require("socket.io")(http, { cors: { origin: "*   " } });
 socketIO.on("connection", (socket) => {
   console.log("a user is connected");
   socket.on("hi",(msg) => {
-    console.log(msg);
-    socketIO.emit("chat", msg);
+    socket.join("greeting");
+    socketIO.to('greeting').emit("chat", msg);
   })
    socket.on("disconnect", () => {
      console.log("user disconnected");
