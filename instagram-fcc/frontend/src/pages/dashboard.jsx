@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { socket } from "../socket";
+import { Link } from "react-router-dom";
 
 function Dashboard() {
   const [chatMsgs, setChatMsgs] = useState([]);
@@ -31,7 +32,9 @@ function Dashboard() {
         onKeyDown={(e) => handleKeyDown(e)}
       />
 
-      <p>Chat Messages</p>
+      <p>Chat Messages
+        <Link to="/test">Test</Link>
+      </p>
       {chatMsgs.length > 0 &&
         chatMsgs.map((msg, index) => {
           return (
