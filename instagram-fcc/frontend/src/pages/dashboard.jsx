@@ -16,6 +16,10 @@ function Dashboard() {
     socket.on("chate", (msg) => {
       setChatMsgs((chatMsgs) => [...chatMsgs, msg]);
     });
+    return ()=>{
+      console.log("dashboard has been unmounted");
+    }
+    
   }, []);
   return (
     <>
