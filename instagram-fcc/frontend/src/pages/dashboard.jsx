@@ -1,30 +1,66 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import Header from "../components/header";
-import Sidebar from "../components/sidebar";
-import Timeline from "../components/timeline";
-import { useSocket } from "../context/socket";
-import { GlobalDataState } from "../context/GlobalDataProvider";
-var socket;
-import io from "socket.io-client";
-const ENDPOINT = "http://localhost:8001";
-export default function Dashboard() {
-  const { user } = GlobalDataState();
-  console.log("user in dashboard", user);
+import { useEffect, useRef, useState } from "react";
+import { socket } from "../socket";
 
-  useEffect(() => {
-    socket = io(ENDPOINT);
-    console.log("here");
-    socket.emit("setup", user);
-    socket.on("connected", console.log("socket connected successfully"));
-  }, [user]);
-
+function Dashboard() {
+  const [chatMsgs, setChatMsgs] = useState([]);
+  const inputVal = useRef();
+  const sayHi = () => {
+  };
+  const handleKeyDown = (e)=>{
+    if(e.key=="Enter"){
+      
+      socket.emit("hi", inputVal.current.value);
+      e.target.value = "";
+      
+    }
+  }
+ useEffect(()=>{
+ socket.on("chat", (msg) => {
+   setChatMsgs((chatMsgs) => [...chatMsgs, msg]);
+ });
+ },[])
   return (
     <>
-      <Header></Header>
-      <div className="grid grid-cols-3 gap-4  justify-between mx-auto max-w-screen-lg ">
-        <Timeline></Timeline>
-        <Sidebar></Sidebar>
-      </div>
+      <input
+        placeholder="Enter your message here"
+        style={{
+          border: "2px solid gray",
+          position: "fixed",
+          bottom: "2rem",
+          width: "100%",
+        }}
+        ref={inputVal}
+        type="text"
+        onKeyDown={(e)=>handleKeyDown(e)}
+      />
+
+      <p>Chat Messages</p>
+     {chatMsgs.length>0 &&  chatMsgs.map((msg,index) => {
+        return (
+          <div
+            key={index}
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: index % 2 === 0 ? "flex-start" : "flex-end",
+            }}
+          >
+            <p
+              style={{
+                border: "2px solid gray",
+
+                width: "fit-content",
+                padding: "0.5em",
+                borderRadius: "3px",
+              }}
+            >
+              {msg}
+            </p>
+          </div>
+        );
+      })}
     </>
   );
 }
+
+export default Dashboard;

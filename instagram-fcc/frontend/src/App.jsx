@@ -10,14 +10,6 @@ import Dashboard from "./pages/dashboard.jsx";
 
 const router = createBrowserRouter([
   {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/sign-up",
-    element: <SignUp />,
-  },
-  {
     path: "/",
     element: <Dashboard />,
   },
