@@ -28,10 +28,20 @@ const router = createBrowserRouter([
 ]);
 import { socket } from "./socket.js";
 import SocketContext from "./context/socket.js";
+import { useEffect, useState } from "react";
 function App() {
+  const [socketConnected, setSocketConnected] = useState(socket.connected);
+  useEffect(() => {
+    function onConnect() {
+      setSocketConnected(true);
+    }
+    socket.on("connect", onConnect);
+  }, []);
   return (
     <>
-      <SocketContext.Provider value={socket.connected}>
+      <SocketContext.Provider
+        value={{ socketConnectionState: socketConnected }}
+      >
         <RouterProvider router={router} />
       </SocketContext.Provider>
     </>
