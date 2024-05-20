@@ -49,12 +49,7 @@ export default function Actions({
     }
     updatePhoto();
   };
- useEffect(() => {
-   socket.on("likeReceived", (msg) => {
-     console.log("like received data", msg);
-   });
-  
- }, [user, socketConnectionState]);
+
    
 
   return (

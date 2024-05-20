@@ -9,13 +9,13 @@ import { socket } from "../socket";
 import SocketContext from "../context/socket";
 const ENDPOINT = "http://localhost:8001";
 export default function Dashboard() {
-  const { user } = GlobalDataState();
+  const { user, setNotification } = GlobalDataState();
   const { socketConnectionState } = useContext(SocketContext);
 
   useEffect(() => {
-     socket.on("likeReceived", (msg) => {
-       console.log("like received data", msg);
-     });
+    socket.on("likeReceived", (msg) => {
+      setNotification([msg]);
+    });
     if (user && socketConnectionState) {
       socket.emit("setup", user);
     }

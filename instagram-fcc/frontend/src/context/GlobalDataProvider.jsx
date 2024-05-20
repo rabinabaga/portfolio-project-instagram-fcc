@@ -6,7 +6,7 @@ const GlobalDataContext = createContext();
 const GlobalDataProvider = ({ children }) => {
   const [user, setUser] = useState();
 
-  // const [notification, setNotification] = useState([]);
+  const [notification, setNotification] = useState([]);
 
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -26,8 +26,8 @@ const GlobalDataProvider = ({ children }) => {
         user,
 
         setUser,
-        // notification,
-        // setNotification,
+        notification,
+        setNotification,
         // chats,
         // setChats,
       }}
