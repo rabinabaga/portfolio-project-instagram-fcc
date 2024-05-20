@@ -3,8 +3,8 @@ function Profile() {
     <div>
       {" "}
       <div className="px-2 py-1 flex md:hidden flex-row justify-between">
-        <div className="flex max-w-30">
-          <img className="" src="/imges/logo.png" alt="instagram logo" />
+        <div className="flex max-w-20.">
+          <img  src="/imges/logo.png" alt="instagram logo" />
           <span className="flex justify-center items-center ml-1 align-baseline">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +58,7 @@ function Profile() {
           </span>
         </div>
       </div>
-      <div className="md:flex-col">
+      <div className="hidden sm:flex-col">
        <div className="my-3">
        <svg
           xmlns="http://www.w3.org/2000/svg"
