@@ -3,6 +3,7 @@ import Login from "./pages/login.jsx";
 import "./index.css";
 import SignUp from "./pages/sign-up.jsx";
 import Dashboard from "./pages/dashboard.jsx";
+import Profile from "./pages/profile.jsx";
 // import Notfound from "./pages/not-found.jsx";
 // import useAuthListener from "./hooks/use-auth-listener.js";
 // import UserContext from "./context/user.js";
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Dashboard />,
+  },
+  {
+    path: "/profile",
+    element: <Profile />,
   },
   // {
   //   path: "/p/:username",
