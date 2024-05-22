@@ -7,6 +7,7 @@ import SocketContext from "./context/socket.js";
 import { socket } from "./socket.js";
 import { useEffect, useState } from "react";
 import Profile from "./pages/profile.jsx";
+import AuthLayout from "./layouts/auth-layout.jsx";
 // import Notfound from "./pages/not-found.jsx";
 // import useAuthListener from "./hooks/use-auth-listener.js";
 // import UserContext from "./context/user.js";
@@ -21,14 +22,20 @@ const router = createBrowserRouter([
     path: "/sign-up",
     element: <SignUp />,
   },
-  {
-    path: "/",
-    element: <Dashboard />,
-  },
-  {
-    path: "/profile",
-    element: <Profile />,
-  },
+ {
+  path:"/",
+  element:<AuthLayout/>,
+  children:[
+    {
+      index:true,
+      element: <Dashboard />,
+    },
+    {
+      path: "/profile",
+      element: <Profile />,
+    },
+  ]
+ }
   // {
   //   path: "/p/:username",
   //   element: <Profile />,
