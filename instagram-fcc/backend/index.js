@@ -1,6 +1,8 @@
 const dotenv = require("dotenv");
+
 dotenv.config();
 const app = require("./src/config/express.config.js");
+
 const http = require("http").Server(app);
 const socketIO = require("socket.io")(http, { cors: { origin: "*   " } });
 

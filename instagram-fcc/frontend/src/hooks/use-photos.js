@@ -5,6 +5,8 @@ import { GlobalDataState } from "../context/GlobalDataProvider";
 
 export default function usePhotos() {
   const [photos, setPhotos] = useState([]);
+
+  const [myPhotos, setMyPhotos] = useState([]);
   const { user } = GlobalDataState();
 
   useEffect(() => {
@@ -22,7 +24,7 @@ export default function usePhotos() {
 
           //its implied, the jwt token has the id of the loggedin user and we need the following poeple's photos, and this api is for that exactly
           followedUserPhotos = await axios.get(
-            "http://localhost:8001/api/v1/photos/get-photos",
+           " http://localhost:8001/api/v1/photos/get-photos",
 
             config
           );
@@ -39,8 +41,37 @@ export default function usePhotos() {
 
       // followedUserPhotos.sort((a, b) => b.createdAt - a.createdAt);
     }
+    async function getProfilePhotos() {
+      let myFetchedPhotos;
+      async function getMyPhotos() {
+        try {
+          const config = {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          };
+
+          //its implied, the jwt token has the id of the loggedin user and we need the following poeple's photos, and this api is for that exactly
+          myFetchedPhotos = await axios.get(
+            "http://localhost:8001/api/v1/photos/get-my-photos",
+            config
+          );
+          const data = myFetchedPhotos?.data?.data;
+          setMyPhotos(data);
+        } catch (error) {
+          console.log("error", error);
+        }
+      }
+      //does the user acutally follow people
+      if (user) {
+       myFetchedPhotos = await getMyPhotos();
+      }
+
+      // followedUserPhotos.sort((a, b) => b.createdAt - a.createdAt);
+    }
     getTimelinePhotos();
+    getProfilePhotos();
   }, [user]);
 
-  return { photos };
+  return { photos, myPhotos };
 }

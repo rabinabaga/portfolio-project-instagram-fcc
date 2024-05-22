@@ -1,4 +1,5 @@
 import { useState } from "react";
+import usePhotos from "../hooks/use-photos";
 import { GlobalDataState } from "../context/GlobalDataProvider";
 import axios from "axios";
 
@@ -6,6 +7,10 @@ function Profile() {
   const [file, setFile] = useState(null);
   const { user } = GlobalDataState();
   const [toggle, setToggle] = useState(false);
+
+  
+  const { myPhotos } = usePhotos();
+
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
@@ -30,7 +35,8 @@ function Profile() {
       console.log("failed to upload photos", err);
     }
   };
-
+  const url_imgs = "http://localhost:8001/images/"
+  console.log(myPhotos);
   return (
     <>
       <button
@@ -91,6 +97,13 @@ function Profile() {
           </div>
         </div>
       )}
+      <div className="grid grid-cols-3 gap-4">
+        {myPhotos?.map((photo)=>{
+          return<div key={photo._id}>
+              <img src={`${url_imgs}${photo.imageSrc}`} alt="" />
+          </div>
+        })}
+      </div>
     </>
   );
   // return (
