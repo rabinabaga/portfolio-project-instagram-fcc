@@ -58,6 +58,24 @@ class PhotosController {
         console.error(err);
       });
   }
+  async getMyPhotos(req, res, next) {
+    PhotoModel.find({ userDocId: req.user._id })
+      .populate("likes")
+      .populate("userDocId") // Use single quotes for consistency
+      .limit(10)
+      .sort({ _id: -1 }) // Sort by most recent (descending)
+      .lean() // Improve performance for large datasets (optional)
+      .then((photos) => {
+        return res.status(200).json({
+          data: photos,
+          msg: "photo of loggedin user fetched successfully",
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
   async updatePhoto(req, res, next) {
     let result = {};
     //get the objectid of the likes where the username is sent one from the frontend

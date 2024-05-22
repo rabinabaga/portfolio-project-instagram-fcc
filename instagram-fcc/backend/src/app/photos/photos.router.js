@@ -7,6 +7,8 @@ router.post("/insert-photos",upload.single("imageSrc"), checkAuthentication, pho
 
 router.get("/get-photos", checkAuthentication, photosCtrl.getPhotos);
 
+router.get("/get-my-photos", checkAuthentication, photosCtrl.getMyPhotos);
+
 router.post("/update-photo", checkAuthentication, photosCtrl.updatePhoto);
 
 module.exports = router;
