@@ -4,7 +4,6 @@ const { LikeModel } = require("./photo.model");
 
 class PhotosController {
   async getAllPhotos(req, res, next) {
-  
     res.status(400).json({
       user: req.user,
     });
@@ -12,9 +11,11 @@ class PhotosController {
 
   async insertPhotos(req, res, next) {
     let createdPhoto;
+
     if (req.user) {
       createdPhoto = await PhotoModel.create({
-        ...req.body,
+        imageSrc: req.file.filename,
+        userDocId: req.user._id,
       });
     }
     res.status(200).json({
@@ -98,14 +99,14 @@ class PhotosController {
             {
               new: true,
             }
-          ).populate("userDocId","-password")
-         result = await UserModel.populate(result,{
-          path:"likes",
-          populate:{
-            path:"username",
-            select:"username"
-          }
-         })
+          ).populate("userDocId", "-password");
+          result = await UserModel.populate(result, {
+            path: "likes",
+            populate: {
+              path: "username",
+              select: "username",
+            },
+          });
           res.status(200).json({
             data: result,
             msg: "photo updated  successfully",
