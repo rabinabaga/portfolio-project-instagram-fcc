@@ -23,6 +23,7 @@ class AuthController {
     // "email": "akhada@gmail.com",
     //   "password":"1612$ten"
     const user = await UserModel.findOne({ email: email });
+    
     // const transporter = nodemailer.createTransport({
     //   host: "sandbox.smtp.mailtrap.io",
     //   port: 2525,
@@ -42,6 +43,7 @@ class AuthController {
     // });
     // console.log("Message sent: %s", info.messageId);
     if (user && (await user.matchPassword(password))) {
+      console.log("user", user);
       res.status(200).json({
         _id: user._id,
         fullName: user.fullName,

@@ -9,13 +9,14 @@ const GlobalDataProvider = ({ children }) => {
   const [notification, setNotification] = useState([]);
 
   useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    setUser(userInfo);
-
-    if (!userInfo) {
-      // navigate("/login");
-      console.log("unauthorized");
+    let userInfo;
+    try {
+     userInfo = JSON.parse(localStorage.getItem("userInfo"));
+      
+    } catch (exception) {
+      console.log("exception", exception);
     }
+    setUser(userInfo);
   }, []);
 
   return (
