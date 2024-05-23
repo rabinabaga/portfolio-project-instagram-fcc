@@ -1,7 +1,6 @@
 const UserModel = require("./user.model");
 const generateToken = require("./helpers");
 const nodemailer = require("nodemailer");
-const { z } = require("zod");
 
 class AuthController {
   async signUp(req, res, next) {
@@ -11,19 +10,9 @@ class AuthController {
 
   async login(req, res, next) {
     const { email, password } = req.body;
-    const User = z.object({
-      email: z.string().email().min(10),
-      password: z.string().min(6),
-    });
-    try {
-      const validated = User.parse(req.body);
-    } catch (exception) {
-      next(exception);
-    }
-    // "email": "akhada@gmail.com",
-    //   "password":"1612$ten"
+
     const user = await UserModel.findOne({ email: email });
-    
+
     // const transporter = nodemailer.createTransport({
     //   host: "sandbox.smtp.mailtrap.io",
     //   port: 2525,
