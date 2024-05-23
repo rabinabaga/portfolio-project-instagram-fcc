@@ -2,19 +2,20 @@ import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as ROUTES from "../constants/routes";
 import { GlobalDataState } from "../context/GlobalDataProvider";
+import axios from "axios";
 
 export default function SignUp() {
   const navigate = useNavigate();
   const {setUser} = GlobalDataState();
 
-  const [emailAddress, setEmailAddress] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState();
   const [fullName, setFullName] = useState();
 
   const [error, setError] = useState("");
   const isInvalid =
-    emailAddress === "" ||
+    email === "" ||
     password === "" ||
     fullName === "" ||
     username === "";
@@ -29,7 +30,7 @@ export default function SignUp() {
     
     const { data } = await axios.post(
       "http://localhost:8001/api/v1/auth/sign-up",
-      { emailAddress, password, fullName, username },
+      { email, password, fullName, username },
       config
     );
     setUser(data);
@@ -40,10 +41,10 @@ export default function SignUp() {
     //   try {
     //     const createdUserResult = await firebase
     //       .auth()
-    //       .createUserWithEmailAndPassword(emailAddress, password);
+    //       .createUserWithEmailAndPassword(email, password);
 
     //     //authentication
-    //     // -> emailAddress and password and username (displayName)
+    //     // -> email and password and username (displayName)
     //     await createdUserResult.user.updateProfile({
     //       displayName: username,
     //     });
@@ -53,20 +54,20 @@ export default function SignUp() {
     //       userId: createdUserResult.user.uid,
     //       username: username.toLowerCase(),
     //       fullName,
-    //       emailAddres: emailAddress.toLowerCase(),
+    //       emailAddres: email.toLowerCase(),
     //       following: [],
     //       dateCreated: Date.now(),
     //     });
     //     navigate(ROUTES.DASHBOARD)
     //   } catch (error) {
     //     setError(error.message)
-    //     setEmailAddress('');
+    //     setemail('');
     //     setPassword(''),
     //     setFullName(''),
     //     setUsername('')
     //   }
     // }else{
-    //   setEmailAddress('');
+    //   setemail('');
     //   setPassword(''),
     //   setFullName(''),
     //   setUsername('')
@@ -80,7 +81,7 @@ export default function SignUp() {
 
       const { data } = await axios.post(
         "http://localhost:8001/api/v1/auth/login",
-        { emailAddress, password },
+        { email, password },
         config
       );
       setUser(data);
@@ -88,7 +89,7 @@ export default function SignUp() {
       navigate(ROUTES.DASHBOARD);
     } catch (error) {
       console.log("error", error);
-      setEmailAddress("");
+      setEmail("");
       setPassword("");
       setError(error.message);
     }
@@ -129,8 +130,8 @@ export default function SignUp() {
               type="text"
               placeholder="Enter your email address"
               className="p-2 mb-2 border border-gray-primary rounded focus:border-blue-500 focus:outline-none"
-              value={emailAddress}
-              onChange={({ target }) => setEmailAddress(target.value)}
+              value={email}
+              onChange={({ target }) => setEmail(target.value)}
             />
             <input
               type="password"

@@ -1,9 +1,14 @@
 const UserModel = require("./user.model");
 const generateToken = require("./helpers");
+const nodemailer = require("nodemailer");
+
+
 
 class AuthController {
   async signUp(req, res, next) {
     const createdUser = await UserModel.create(req.body);
+
+  
     res.status(200).json(createdUser);
   }
 
@@ -12,6 +17,24 @@ class AuthController {
     // "email": "akhada@gmail.com",
     //   "password":"1612$ten"
     const user = await UserModel.findOne({ email: email });
+    const transporter = nodemailer.createTransport({
+      host: "sandbox.smtp.mailtrap.io",
+      port: 2525,
+      
+      auth: {
+        user: "253dcedc975b38",
+        pass: "465ed957b7cb68",
+      },
+    });
+console.log("transporter", transporter);
+    const info = await transporter.sendMail({
+      from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>', // sender address
+      to: "tarinaresi50@gmail.com", // list of receivers
+      subject: "Hello ✔", // Subject line
+      text: "Hello world?", // plain text body
+      html: "<b>Hello world?</b>", // html body
+    });
+    console.log("Message sent: %s", info.messageId);
     if (user && (await user.matchPassword(password))) {
       res.status(200).json({
         _id: user._id,
