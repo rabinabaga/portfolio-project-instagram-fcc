@@ -1,3 +1,5 @@
+
+
 import { useState } from "react";
 import usePhotos from "../hooks/use-photos";
 import { GlobalDataState } from "../context/GlobalDataProvider";
@@ -48,7 +50,7 @@ function Profile() {
       >
         Create Post 
       </button>
-
+      <hr className="bg-gray-500" />
       {toggle && (
         <div
           id="authentication-modal"
@@ -97,10 +99,10 @@ function Profile() {
           </div>
         </div>
       )}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid px-28 grid-cols-4 grid-rows-2 gap-4">
         {myPhotos?.map((photo)=>{
-          return<div key={photo._id}>
-              <img src={`${url_imgs}${photo.imageSrc}`} alt="" />
+          return<div  key={photo._id}>
+              <img className="h-72 w-72 object-cover " src={`${url_imgs}${photo.imageSrc}`} alt="" />
           </div>
         })}
       </div>
