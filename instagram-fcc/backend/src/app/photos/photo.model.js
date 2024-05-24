@@ -45,5 +45,6 @@ const LikeModel = mongoose.model('Like', likeSchema);
 const PhotoModel = mongoose.model("Photo", PhotoSchema);
 module.exports = {
   PhotoModel: PhotoModel,
-  LikeModel: LikeModel
+  LikeModel: LikeModel,
+  CommentModel: CommentModel
 };

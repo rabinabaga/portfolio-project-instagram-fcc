@@ -7,6 +7,8 @@ import Footer from "./Footer";
 import Comments from "./Comments";
 
 export default function Post({ content }) {
+
+  console.log("content comments",content);
   const commentInput = useRef(null);
   const handleFocus = () => commentInput.current.focus();
   return (
@@ -22,7 +24,7 @@ export default function Post({ content }) {
       />
       <Footer username={content.username} caption={content.caption}></Footer>
       <Comments
-        docId={content.docId}
+        docId={content._id}
         comments={content.comments}
         posted={content.dateCreated}
         commentInput={commentInput}

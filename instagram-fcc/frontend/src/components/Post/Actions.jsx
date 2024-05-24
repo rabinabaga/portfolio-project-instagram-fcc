@@ -34,7 +34,7 @@ export default function Actions({
         };
 
         const { data } = await axios.post(
-          "http://localhost:8001/api/v1/photos/update-photo",
+          "http://localhost:8001/api/v1/photos/update-photo-like",
           {
             docId,
             username: user.username,

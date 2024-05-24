@@ -23,11 +23,11 @@ export default function Comments({
       {comments?.slice(0, 3).map((item) => {
         return (
           <p
-            key={`${item.comment}-${item.displayName}`}
+            key={`${item.comment}-${item.username}`}
             className="p-4 pt-2 pb-0"
           >
-            <Link to={`/p/${item.displayName}`}>
-              <span className="mr-1 font-bold">{item.displayName}</span>
+            <Link to={`/p/${item.username}`}>
+              <span className="mr-1 font-bold">{item.username}</span>
             </Link>
             <span>{item.comment}</span>
           </p>

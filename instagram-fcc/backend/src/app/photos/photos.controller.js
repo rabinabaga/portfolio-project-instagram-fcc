@@ -1,5 +1,5 @@
 const UserModel = require("../auth/user.model");
-const { PhotoModel } = require("./photo.model");
+const { PhotoModel, CommentModel } = require("./photo.model");
 const { LikeModel } = require("./photo.model");
 
 class PhotosController {
@@ -29,6 +29,7 @@ class PhotosController {
     const { following, username } = user[0];
     PhotoModel.find({ userDocId: { $in: following } })
       .populate("likes")
+      .populate("comments")
       .populate("userDocId") // Use single quotes for consistency
       .limit(10)
       .sort({ _id: -1 }) // Sort by most recent (descending)
@@ -76,7 +77,7 @@ class PhotosController {
       });
   }
 
-  async updatePhoto(req, res, next) {
+  async updatePhotoLike(req, res, next) {
     let result = {};
     //get the objectid of the likes where the username is sent one from the frontend
     try {
@@ -138,6 +139,43 @@ class PhotosController {
       }
     } catch (error) {
       console.error("Error updating document:", error);
+    }
+  }
+
+  //we need photo id, userid/username and comment content from frontend
+  async updatePhotoComment(req, res, next) {
+    let result = {};
+ 
+    //get the objectid of the likes where the username is sent one from the frontend
+    try {
+      const commentObject = await CommentModel.create({
+        username: req.user.username,
+        comment: req.body.comment,
+      });
+
+      result = await PhotoModel.findOneAndUpdate(
+        { _id: req.body.docId },
+        { $push: { comments: commentObject._id } },
+        {
+          new: true,
+        }
+      )
+        .populate("userDocId", "-password")
+        .populate({
+          path: "comments",
+          select: { username: 1, comment: 1 },
+        });
+        
+
+      res.status(200).json({
+        data: result,
+        msg: "photo comment updated  successfully",
+      });
+    } catch (error) {
+      next({
+        data: error,
+        msg: "commenting photo failed",
+      });
     }
   }
 }

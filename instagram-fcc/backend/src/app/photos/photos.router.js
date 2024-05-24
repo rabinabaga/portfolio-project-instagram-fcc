@@ -9,6 +9,10 @@ router.get("/get-photos", checkAuthentication, photosCtrl.getPhotos);
 
 router.get("/get-my-photos", checkAuthentication, photosCtrl.getMyPhotos);
 
-router.post("/update-photo", checkAuthentication, photosCtrl.updatePhoto);
+router.post("/update-photo-like", checkAuthentication, photosCtrl.updatePhotoLike);
+
+router.post("/update-photo-comment", checkAuthentication, photosCtrl.updatePhotoComment);
+
+
 
 module.exports = router;

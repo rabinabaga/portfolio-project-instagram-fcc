@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { useState, useContext } from "react";
 import { GlobalDataState } from "../../context/GlobalDataProvider";
+import axios from "axios";
 
 
 export default function AddComment({
@@ -9,26 +10,37 @@ export default function AddComment({
   setComments,
   commentInput,
 }) {
+
   const [comment, setComment] = useState("");
   const { user } = GlobalDataState();
-  const handleSubmitComment = (event) => {
+  const handleSubmitComment = async (event) => {
     event.preventDefault();
-    setComments([{ displayName: user?.username, comment }, ...comments]);
+    setComments([{ username: user?.username, comment }, ...comments]);
     setComment("");
-    return firebase
-      .firestore()
-      .collection("photos")
-      .doc(docId)
-      .update({
-        comments: FieldValue.arrayUnion({
-          comment,
-          displayName: user?.username,
-        }),
-      });
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+
+      const { data } = await axios.post(
+        "http://localhost:8001/api/v1/photos/update-photo-comment",
+        {
+          docId,
+          username: user.username,
+         comment:comment
+        },
+        config
+      );
+   
+    } catch (err) {
+      console.log("error in update photo", err);
+    }
   };
   return (
     <div>
-      {user?.displayName}
+      
       <form
         className="border-t border-gray-primary flex justify-between pr-5 mt-2"
         action=""
