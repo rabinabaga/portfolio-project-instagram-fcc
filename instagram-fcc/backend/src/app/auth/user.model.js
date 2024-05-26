@@ -37,7 +37,7 @@ const UserSchema = new Schema(
     followers: [{ type: Schema.Types.ObjectId, ref: "User" }],
     following: [{ type: Schema.Types.ObjectId, ref: "User" }],
 
-    token: String,
+    accessToken: String,
     forgetToken: String,
     validateTill: Date,
   },

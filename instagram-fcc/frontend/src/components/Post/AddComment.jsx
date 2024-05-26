@@ -2,6 +2,8 @@ import PropTypes from "prop-types";
 import { useState, useContext } from "react";
 import { GlobalDataState } from "../../context/GlobalDataProvider";
 import axios from "axios";
+import {ACCESS_TOKEN} from "../../constants"
+
 
 
 export default function AddComment({
@@ -20,7 +22,7 @@ export default function AddComment({
     try {
       const config = {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${user[ACCESS_TOKEN]}`,
         },
       };
 

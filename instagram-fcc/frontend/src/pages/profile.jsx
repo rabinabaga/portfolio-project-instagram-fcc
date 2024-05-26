@@ -20,7 +20,7 @@ function Profile() {
     try {
       const config = {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${user.ACCESS_TOKEN}`,
           "content-type": "multipart/form-data",
         },
       };

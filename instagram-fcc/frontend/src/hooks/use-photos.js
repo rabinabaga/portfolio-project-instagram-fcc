@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import axios from "axios";
+import {ACCESS_TOKEN} from "../constants"
+
 import { useState } from "react";
 import { GlobalDataState } from "../context/GlobalDataProvider";
 
@@ -8,6 +10,7 @@ export default function usePhotos() {
 
   const [myPhotos, setMyPhotos] = useState([]);
   const { user } = GlobalDataState();
+  console.log("in use photos", user[ACCESS_TOKEN]);
 
   useEffect(() => {
     async function getTimelinePhotos() {
@@ -18,7 +21,7 @@ export default function usePhotos() {
         try {
           const config = {
             headers: {
-              Authorization: `Bearer ${user.token}`,
+              Authorization: `Bearer ${user[ACCESS_TOKEN]}`,
             },
           };
 
@@ -47,7 +50,7 @@ export default function usePhotos() {
         try {
           const config = {
             headers: {
-              Authorization: `Bearer ${user.token}`,
+              Authorization: `Bearer ${user[ACCESS_TOKEN]}`,
             },
           };
 

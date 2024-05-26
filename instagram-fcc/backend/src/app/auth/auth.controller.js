@@ -32,6 +32,7 @@ class AuthController {
     // });
     // console.log("Message sent: %s", info.messageId);
     if (user && (await user.matchPassword(password))) {
+      const { accessToken, refreshToken } = generateToken(user._id);
       console.log("user", user);
       res.status(200).json({
         _id: user._id,
@@ -39,7 +40,8 @@ class AuthController {
         email: user.email,
         username: user.username,
         pic: user.pic,
-        token: generateToken(user._id),
+        accessToken: accessToken,
+        refreshToken: refreshToken,
         followers: user.followers,
         following: user.following,
         success: true,

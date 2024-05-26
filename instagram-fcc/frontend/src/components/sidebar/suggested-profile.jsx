@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { GlobalDataState } from "../../context/GlobalDataProvider";
 import axios from "axios";
 // import { updateLoggedInUserFollowing, updateFollowedUserFollowers } from "../../services/firebase";
+import {ACCESS_TOKEN} from "../../constants"
+
 
 export default function SuggestedProfile({
   profileDocId,
@@ -19,7 +21,7 @@ export default function SuggestedProfile({
       try {
         const config = {
           headers: {
-            Authorization: `Bearer ${user.token}`,
+            Authorization: `Bearer ${user[ACCESS_TOKEN]}`,
             "Content-type": "application/json",
           },
         };

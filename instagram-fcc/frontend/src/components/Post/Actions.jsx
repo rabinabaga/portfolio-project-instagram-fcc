@@ -1,6 +1,7 @@
 import { PropTypes } from "prop-types";
 import { useContext, useEffect } from "react";
 import { useState } from "react";
+import {ACCESS_TOKEN} from "../../constants"
 
 import { GlobalDataState } from "../../context/GlobalDataProvider";
 import axios from "axios";
@@ -29,7 +30,7 @@ export default function Actions({
       try {
         const config = {
           headers: {
-            Authorization: `Bearer ${user.token}`,
+            Authorization: `Bearer ${user[ACCESS_TOKEN]}`,
           },
         };
 

@@ -5,6 +5,8 @@ import { useState } from "react";
 import SuggestedProfile from "./suggested-profile";
 import { GlobalDataState } from "../../context/GlobalDataProvider";
 import axios from "axios";
+import {ACCESS_TOKEN} from "../../constants"
+
 
 export default function Suggestions() {
   const [profiles, setProfiles] = useState(null);
@@ -15,7 +17,7 @@ export default function Suggestions() {
       try {
         const config = {
           headers: {
-            Authorization: `Bearer ${user.token}`,
+            Authorization: `Bearer ${user[ACCESS_TOKEN]}`,
             "Content-type": "application/json",
           },
         };

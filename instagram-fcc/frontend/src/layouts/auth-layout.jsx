@@ -1,6 +1,8 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { getAccessToken } from "../utils/local-storage";
 import { useEffect } from "react";
+import {ACCESS_TOKEN} from "../constants"
+
 
 function AuthLayout() {
     const navigate = useNavigate();
