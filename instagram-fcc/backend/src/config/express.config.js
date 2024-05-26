@@ -10,6 +10,7 @@ app.use(express.static("public"));
 require("./mongodb.config");
 
 const routes = require("../routes");
+const { TokenExpiredError } = require("jsonwebtoken");
 app.use("/api/v1", routes);
 
 app.use((req, res, next) => {
@@ -26,6 +27,12 @@ app.use((error, req, res, next) => {
     errBag = error.errors.map((error) => {
       return { ...data, [error["path"][0]]: error.message };
     });
+  }else if(error instanceof TokenExpiredError){
+    error.code = 401;
+    console.log("error here", error.code);
+  
+  }else{
+    errBag=error;
   }
 
   code = error.code ?? 500;

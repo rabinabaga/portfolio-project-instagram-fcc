@@ -7,6 +7,7 @@ import { GlobalDataState } from "../context/GlobalDataProvider";
 import axios from "axios";
 import * as yup from 'yup';
 import ValidationErrorMessage from "../components/validation-error-message";
+import {getAccessToken} from "../utils/local-storage"
 
 const schema = yup
   .object()
@@ -50,6 +51,9 @@ export default function Login() {
   };
 
   useEffect(() => {
+    if(getAccessToken()){
+      navigate("/")
+    }
     document.title = "Login - Instagram";
   }, []);
 

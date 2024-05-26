@@ -1,18 +1,25 @@
 
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import usePhotos from "../hooks/use-photos";
 import { GlobalDataState } from "../context/GlobalDataProvider";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 
 function Profile() {
   const [file, setFile] = useState(null);
   const { user } = GlobalDataState();
   const [toggle, setToggle] = useState(false);
-
+  const navigate = useNavigate()
   
   const { myPhotos } = usePhotos();
 
+  useEffect(()=>{
+    if(!user){
+      navigate("/login")
+    }
+  },[])
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };

@@ -28,7 +28,11 @@ export default function Suggestions() {
 
           config
         );
-        setProfiles(data.data);
+        if(data.data){
+          setProfiles(data.data)
+        }else{
+          //
+        }
       } catch (error) {
         console.log("error", error);
       }

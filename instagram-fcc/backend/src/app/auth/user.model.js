@@ -38,6 +38,7 @@ const UserSchema = new Schema(
     following: [{ type: Schema.Types.ObjectId, ref: "User" }],
 
     accessToken: String,
+    refreshToken: String,
     forgetToken: String,
     validateTill: Date,
   },

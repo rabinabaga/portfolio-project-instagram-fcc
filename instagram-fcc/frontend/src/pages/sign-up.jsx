@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import * as ROUTES from "../constants/routes";
 import { GlobalDataState } from "../context/GlobalDataProvider";
 import axios from "axios";
+import { getAccessToken } from "../utils/local-storage";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -96,6 +97,9 @@ export default function SignUp() {
   };
 
   useEffect(() => {
+    if(getAccessToken()){
+      navigate("/")
+    }
     document.title = "Sign Up - Instagram";
   }, []);
 
