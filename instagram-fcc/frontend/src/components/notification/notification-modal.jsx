@@ -3,13 +3,12 @@ import NotificationListItem from "./notification-list-item";
 
 function NotificationModal({ showModal, modalId, handleClick }) {
   const { user, setUser, notification } = GlobalDataState() || {};
-  console.log("modal", notification);
+  console.log("modal", notification[0]?.username);
   const notificationInfoList = notification.map((item) => {
     return <NotificationListItem item={item}></NotificationListItem>;
   });
   return (
     <div
-
       id="static-modal"
       data-modal-backdrop="static"
       tabindex="-1"
@@ -18,7 +17,11 @@ function NotificationModal({ showModal, modalId, handleClick }) {
     >
       <div className="relative p-4 w-full max-w-2xl max-h-full">
         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-          <ul className="border border-2 border-black ">{notificationInfoList}</ul>
+          {notification.length > 0 && (
+            <ul className="border border-2 border-black ">
+              {notificationInfoList}
+            </ul>
+          )}
         </div>
       </div>
     </div>

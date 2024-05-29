@@ -14,6 +14,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     socket.on("likeReceived", (msg) => {
+      console.log(msg?.userDocId?.username);
       setNotification([msg]);
     });
     if (user && socketConnectionState) {

@@ -12,9 +12,10 @@ socketIO.on("connection", (socket) => {
   });
 
   socket.on("userLikedPhoto", (data) => {
-    console.log("data after user liked photo", data);
-    console.log(data.userDocId._id);
-    socketIO.to(data?.userDocId?._id).emit("likeReceived", data);
+   const username = { username: data.userDocId?.username };
+    const datum = {...data,...username }
+    console.log("datum", datum.username);
+    socketIO.to(data?.userDocId?._id).emit("likeReceived", datum);
   });
 
   socket.on("disconnect", () => {
