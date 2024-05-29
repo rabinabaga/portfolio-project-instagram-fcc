@@ -5,7 +5,7 @@ function NotificationModal({ showModal, modalId, handleClick }) {
   const { user, setUser, notification } = GlobalDataState() || {};
   console.log("modal", notification[0]?.username);
   const notificationInfoList = notification.map((item) => {
-    return <NotificationListItem item={item}></NotificationListItem>;
+    return <NotificationListItem key={item._id} item={item}></NotificationListItem>;
   });
   return (
     <div

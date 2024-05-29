@@ -2,10 +2,11 @@ import { useState } from "react";
 import PostModal from "./post-modal";
 
 function NotificationListItem({ item }) {
-  console.log("nli", item);
+ 
   const [showPostModal, setShowPostModal] = useState(false);
   const likes = item?.likes;
   const url_imgs = "http://localhost:8001/images/";
+   console.log("show post modal", showPostModal);
   const handleClick = ()=>{
     setShowPostModal(true)
   }
@@ -19,7 +20,7 @@ function NotificationListItem({ item }) {
   });
 
   return <>{mappedLikes}
-  {showPostModal && <PostModal content={item} handleClick={handleClick} showPostModal={showPostModal} />}
+  {showPostModal && <PostModal showPostModal={showPostModal} content={item} handleClick={handleClick} />}
   </>;
 }
 
