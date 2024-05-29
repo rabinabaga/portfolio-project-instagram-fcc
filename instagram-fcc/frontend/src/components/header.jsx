@@ -1,14 +1,21 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { GlobalDataState } from "../context/GlobalDataProvider";
 import { Badge, Button } from "@material-tailwind/react";
 
 import * as ROUTES from "../constants/routes";
+import NotificationModal from "./notification/notification-modal";
 
 export default function Header() {
   const { user, setUser, notification } = GlobalDataState() || {};
+  const [showNotificationModal, setShowNotificationModal] = useState(false);
   const navigate = useNavigate();
+  const modalId = "static-modal";
   console.log("notification", notification);
+  const handleClick = () => {
+    setShowNotificationModal(!showNotificationModal);
+  };
+  console.log("show", showNotificationModal);
   const handleSendMessage = (e) => {
     e.preventDefault();
     // socket.emit('message', {
@@ -52,26 +59,43 @@ export default function Header() {
                     />
                   </svg>
                 </Link>
-                <Badge
-                  className={`p-1 ${notification.length > 0 ? "1" : "hidden"}`}
-                >
-                  <button className="w-8">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="w-6 h-6"
+                <div className="relative">
+                  <Badge
+                    className={`p-1 ${
+                      notification.length > 0 ? "1" : "hidden"
+                    } `}
+                  >
+                    <button
+                      onClick={handleClick}
+                      data-modal-target={modalId}
+                      data-modal-toggle="static-modal"
+                      className="w-8 block "
+                      type="button"
                     >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-                      />
-                    </svg>
-                  </button>
-                </Badge>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="w-6 h-6"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                        />
+                      </svg>
+                    </button>
+                  </Badge>
+                  {showNotificationModal && (
+                    <NotificationModal
+                      modalId={modalId}
+                      showModal={showNotificationModal}
+                      handleClick={handleClick}
+                    ></NotificationModal>
+                  )}
+                </div>
 
                 <button
                   type="button"

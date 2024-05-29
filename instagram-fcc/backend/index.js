@@ -1,6 +1,5 @@
 const config = require("./config/config.js");
 const app = require("./src/config/express.config.js");
-console.log(config);
 
 const http = require("http").Server(app);
 const socketIO = require("socket.io")(http, { cors: { origin: "*   " } });
