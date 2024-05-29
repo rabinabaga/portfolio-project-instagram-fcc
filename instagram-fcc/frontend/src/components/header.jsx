@@ -69,16 +69,16 @@ export default function Header() {
                       onClick={handleClick}
                       data-modal-target={modalId}
                       data-modal-toggle="static-modal"
-                      className="w-8 block "
+                      className="w-12 pt-1 block "
                       type="button"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
-                        stroke-width="1.5"
+                        stroke-width="2"
                         stroke="currentColor"
-                        class="w-6 h-6"
+                        class="w-8 h-8"
                       >
                         <path
                           stroke-linecap="round"
