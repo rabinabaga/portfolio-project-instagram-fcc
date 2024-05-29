@@ -14,7 +14,7 @@ function NotificationModal({ showModal, modalId, handleClick }) {
       data-modal-backdrop="static"
       tabindex="-1"
       aria-hidden="true"
-      className="absolute top-2 left-neg-20 w-52 z-50 "
+      className="absolute top-7 left-neg-20 w-52 z-50 "
     >
       <div className="relative p-4 w-full max-w-2xl max-h-full">
         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
