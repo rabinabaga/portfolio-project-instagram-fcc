@@ -5,9 +5,13 @@ import usePhotos from "../hooks/use-photos";
 import { GlobalDataState } from "../context/GlobalDataProvider";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import {useSelector, useDispatch} from "react-redux"
+import { togglePrivacy } from "../state/profile-privacy/profilePrivacySlice";
 
 
 function Profile() {
+  const dispatch = useDispatch();
+  const privacyState = useSelector((state) => state.profilePrivacy.privacy);
   const [file, setFile] = useState(null);
   const { user } = GlobalDataState();
   const [toggle, setToggle] = useState(false);
@@ -48,6 +52,10 @@ function Profile() {
   console.log(myPhotos);
   return (
     <>
+    <p>Privacy: {privacyState}</p><button onClick={() => {
+      console.log("here");
+      return dispatch(togglePrivacy());
+    }}>toggle</button>
       <button
         onClick={() => setToggle(!toggle)}
         data-modal-target="authentication-modal"
