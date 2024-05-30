@@ -6,7 +6,7 @@ import { GlobalDataState } from "../context/GlobalDataProvider";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux"
-import { togglePrivacy } from "../state/profile-privacy/profilePrivacySlice";
+import { togglePrivacy, togglePrivacyAsync } from "../state/profile-privacy/profilePrivacySlice";
 
 
 function Profile() {
@@ -52,10 +52,18 @@ function Profile() {
   console.log(myPhotos);
   return (
     <>
-    <p>Privacy: {privacyState}</p><button onClick={() => {
-      console.log("here");
-      return dispatch(togglePrivacy());
-    }}>toggle</button>
+      <p>Privacy: {privacyState}</p>
+      <button
+        onClick={() => {
+          console.log("here");
+          return dispatch(togglePrivacy());
+        }}
+      >
+        toggle
+      </button>
+      <button onClick={() => dispatch(togglePrivacyAsync())}>
+        toggle async
+      </button>
       <button
         onClick={() => setToggle(!toggle)}
         data-modal-target="authentication-modal"
@@ -63,7 +71,7 @@ function Profile() {
         className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         type="button"
       >
-        Create Post 
+        Create Post
       </button>
       <hr className="bg-gray-500" />
       {toggle && (
@@ -115,10 +123,16 @@ function Profile() {
         </div>
       )}
       <div className="grid px-28 grid-cols-4 grid-rows-2 gap-4">
-        {myPhotos?.map((photo)=>{
-          return<div  key={photo._id}>
-              <img className="h-72 w-72 object-cover " src={`${url_imgs}${photo.imageSrc}`} alt="" />
-          </div>
+        {myPhotos?.map((photo) => {
+          return (
+            <div key={photo._id}>
+              <img
+                className="h-72 w-72 object-cover "
+                src={`${url_imgs}${photo.imageSrc}`}
+                alt=""
+              />
+            </div>
+          );
         })}
       </div>
     </>
