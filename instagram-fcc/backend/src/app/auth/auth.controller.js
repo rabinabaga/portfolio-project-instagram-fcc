@@ -88,6 +88,7 @@ class AuthController {
   }
 
   async updateFollowedUserFollowers(req, res, next) {
+    console.log("here in ufufrs");
     const result = await UserModel.findOneAndUpdate(
       { _id: req.body.profileDocId },
       { $push: { followers: req.user._id } },

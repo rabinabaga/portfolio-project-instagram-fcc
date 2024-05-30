@@ -14,7 +14,7 @@ export default function SuggestedProfile({
 }) {
   const [followed, setFollowed] = useState(false);
   const { user } = GlobalDataState();
-
+console.log("profile doc id in suggested profile", profileDocId);
   async function handleFollowUser() {
     setFollowed(true);
     async function updateFollowedAndLoggedInUser() {
