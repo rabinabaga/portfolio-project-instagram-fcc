@@ -1,39 +1,106 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import usePhotos from "../hooks/use-photos";
 import { GlobalDataState } from "../context/GlobalDataProvider";
 import axios from "axios";
+
+import ReactCrop, {
+  centerCrop,
+  makeAspectCrop,
+  convertToPixelCrop,
+} from "react-image-crop";
 import { ACCESS_TOKEN } from "../constants";
+import { canvasPreview } from "./helpers/canvasPreview";
+import { useDebounceEffect } from "./helpers/useDebounceEffect";
+
+import "react-image-crop/dist/ReactCrop.css";
+
+function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
+  return centerCrop(
+    makeAspectCrop(
+      {
+        unit: "%",
+        width: 90,
+      },
+      aspect,
+      mediaWidth,
+      mediaHeight
+    ),
+    mediaWidth,
+    mediaHeight
+  );
+}
+
 function UploadImage() {
   const { user } = GlobalDataState();
- 
+  const [imgSrc, setImgSrc] = useState("");
+  const previewCanvasRef = useRef(null);
+  const imgRef = useRef(null);
+  const hiddenAnchorRef = useRef(null);
+  const blobUrlRef = useRef("");
+  const [crop, setCrop] = useState();
+  const [completedCrop, setCompletedCrop] = useState();
+  const [aspect, setAspect] = useState(1 / 1);
 
   const { myPhotos } = usePhotos();
-  const [file, setFile] = useState(null);
   const [toggle, setToggle] = useState(false);
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
-  const handlePhotoPost = async () => {
-    try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user[ACCESS_TOKEN]}`,
-          "content-type": "multipart/form-data",
-        },
-      };
-      const { data } = await axios.post(
-        "http://localhost:8001/api/v1/photos/insert-photos",
-        {
-          imageSrc: file,
-        },
-        config
+  function onSelectFile(e) {
+    if (e.target.files && e.target.files.length > 0) {
+      setCrop(undefined); // Makes crop preview update between images.
+      const reader = new FileReader();
+      reader.addEventListener("load", () =>
+        setImgSrc(reader.result?.toString() || "")
       );
-      alert("photo uploaded successfully");
-      setToggle(false);
-    } catch (err) {
-      console.log("failed to upload photos", err);
+      reader.readAsDataURL(e.target.files[0]);
     }
+  }
+  function onImageLoad(e) {
+    if (aspect) {
+      const { width, height } = e.currentTarget;
+      setCrop(centerAspectCrop(width, height, aspect));
+    }
+  }
+
+  useDebounceEffect(
+    async () => {
+      if (
+        completedCrop?.width &&
+        completedCrop?.height &&
+        imgRef.current &&
+        previewCanvasRef.current
+      ) {
+        // We use canvasPreview as it's much faster than imgPreview.
+        canvasPreview(imgRef.current, previewCanvasRef.current, completedCrop);
+      }
+    },
+    100,
+    [completedCrop]
+  );
+
+  const handlePhotoPost = async () => {
+    const canvas = previewCanvasRef.current;
+
+    canvas.toBlob(async (blob) => {
+      try {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${user[ACCESS_TOKEN]}`,
+            "content-type": "multipart/form-data",
+          },
+        };
+        const { data } = await axios.post(
+          "http://localhost:8001/api/v1/photos/insert-photos",
+          {
+            imageSrc: blob,
+          },
+          config
+        );
+        alert("photo uploaded successfully");
+        setToggle(false);
+      } catch (err) {
+        console.log("failed to upload photos", err);
+      }
+    });
   };
   console.log(myPhotos);
   return (
@@ -64,24 +131,55 @@ function UploadImage() {
               </div>
               <div className="flex flex-col items-center justify-center">
                 <div>
-                  <img className="w-25" src="/imges/gallery.png" alt="" />
-                </div>
-                <div>
-                  <p className="text-lg">Drag photos and videos here</p>
-                </div>
-                <div>
                   <div>
                     <label htmlFor="files" className="bg-blue">
                       Select from this computer
                     </label>
 
-                    <input
-                      id="files"
-                      onChange={handleFileChange}
-                      name="imageSrc"
-                      type="file"
-                      className=" w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    />
+                    <div className="Crop-Controls">
+                      <input
+                        id="files"
+                        onChange={onSelectFile}
+                        name="imageSrc"
+                        type="file"
+                        accept="image/*"
+                        className=" w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                      />
+                    </div>
+                    {!!imgSrc && (
+                      <ReactCrop
+                        crop={crop}
+                        onChange={(_, percentCrop) => setCrop(percentCrop)}
+                        onComplete={(c) => setCompletedCrop(c)}
+                        aspect={aspect}
+                        // minWidth={400}
+                        minHeight={100}
+                        // circularCrop
+                      >
+                        <img
+                          ref={imgRef}
+                          alt="Crop me"
+                          src={imgSrc}
+                          onLoad={onImageLoad}
+                        />
+                      </ReactCrop>
+                    )}
+                    {!!completedCrop && (
+                      <>
+                        <div>
+                          <canvas
+                            ref={previewCanvasRef}
+                            style={{
+                              border: "1px solid black",
+                              objectFit: "contain",
+                              width: completedCrop.width,
+                              height: completedCrop.height,
+                            }}
+                          />
+                        </div>
+                      </>
+                    )}
+
                     <button
                       className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                       type="button"
