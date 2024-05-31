@@ -48,6 +48,7 @@ function App() {
   }, []);
   return (
     <SocketContext.Provider value={{ socketConnectionState: socket.connected }}>
+ 
       <RouterProvider router={router} />
     </SocketContext.Provider>
   );
