@@ -8,7 +8,7 @@ export default function Sidebar() {
   const { user } = GlobalDataState();
 
   return (
-    <div className="p-4">
+    <div className="col-span-2 p-4">
       <User username={user?.username} fullName={user?.fullName} pic={user?.pic}/>
       <Suggestions following={user?.following} loggedInUserDocId={user?.docId} />
     </div>

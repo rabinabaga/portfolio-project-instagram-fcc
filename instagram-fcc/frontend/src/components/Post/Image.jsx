@@ -4,7 +4,12 @@ export default function Image({src, caption}) {
     const url_imgs = "http://localhost:8001/images/"
     return ( 
     
-        <img src={`${url_imgs}${src}`} className="object-cover max-h-72"  alt={caption} />
+       <div className="min-h-fit">
+        {/* //min-h-max */}
+        <img src={`${url_imgs}${src}`} className="w-full h-full object-cover" alt="" />
+       </div>
+             
+
     
   
      );

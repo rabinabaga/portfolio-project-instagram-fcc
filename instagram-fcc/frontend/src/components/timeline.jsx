@@ -15,7 +15,7 @@ export default function Timeline() {
   return (
 
     //TODO1: when photos not loaded, show the skeleton instead of follow to see photos text
-    <div className="container col-span-2">
+    <div className="container col-span-4">
       {!photos ? (
         <Skeleton count={1} width={320} height={400} />
       ) : photos?.length > 0 ? (
