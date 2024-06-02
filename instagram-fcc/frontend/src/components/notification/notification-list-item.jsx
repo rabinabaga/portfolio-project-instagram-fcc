@@ -8,7 +8,7 @@ function NotificationListItem({ item }) {
   const url_imgs = "http://localhost:8001/images/";
    console.log("show post modal", showPostModal);
   const handleClick = ()=>{
-    setShowPostModal(true)
+    setShowPostModal(!showPostModal)
   }
   const mappedLikes = likes.map((like) => {
     return (
