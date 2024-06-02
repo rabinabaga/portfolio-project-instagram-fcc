@@ -1,7 +1,7 @@
 function Header({ pic, username }) {
  if(username){
     return (
-      <div className="max-w-screen-md mx-auto grid grid-cols-6">
+      <div className="max-w-screen-md mx-auto grid grid-cols-6 pt-7">
         <div className="col-span-2 px-6 py-4">
           <img
             src={`/imges/avatars/${username}.jpg`}
