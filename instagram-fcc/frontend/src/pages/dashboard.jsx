@@ -9,18 +9,19 @@ import { socket } from "../socket";
 import SocketContext from "../context/socket";
 const ENDPOINT = "http://localhost:8001";
 export default function Dashboard() {
-  const { user, setNotification } = GlobalDataState();
+  const { user, setNotification,notification, setShowNotificationAlert } = GlobalDataState();
   const { socketConnectionState } = useContext(SocketContext);
 
   useEffect(() => {
     socket.on("likeReceived", (msg) => {
       console.log(msg?.userDocId?.username);
       setNotification([msg]);
+      setShowNotificationAlert(true);
     });
     if (user && socketConnectionState) {
       socket.emit("setup", user);
     }
-  }, [user, socketConnectionState]);
+  }, [user, socketConnectionState, notification]);
 
   return (
     <>

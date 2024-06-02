@@ -7,6 +7,7 @@ const GlobalDataProvider = ({ children }) => {
   const [user, setUser] = useState();
 
   const [notification, setNotification] = useState([]);
+  const [showNotificationAlert, setShowNotificationAlert] = useState(false);
 
   useEffect(() => {
     let userInfo;
@@ -29,6 +30,8 @@ const GlobalDataProvider = ({ children }) => {
         setUser,
         notification,
         setNotification,
+        setShowNotificationAlert,
+        showNotificationAlert
         // chats,
         // setChats,
       }}

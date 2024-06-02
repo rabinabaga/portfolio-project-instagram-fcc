@@ -7,14 +7,19 @@ import * as ROUTES from "../constants/routes";
 import NotificationModal from "./notification/notification-modal";
 
 export default function Header() {
-  const { user, setUser, notification } = GlobalDataState() || {};
+  const {
+    user,
+    setUser,
+    notification,
+    showNotificationAlert,
+    setShowNotificationAlert,
+  } = GlobalDataState() || {};
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   const navigate = useNavigate();
-  const [notificationAlert, setNotificationAlert] = useState(false);
   const modalId = "static-modal";
   console.log("notification", notification);
   const handleClick = () => {
-    setNotificationAlert(false);
+    setShowNotificationAlert(false);
     setShowNotificationModal(!showNotificationModal);
   };
   console.log("show", showNotificationModal);
@@ -26,7 +31,6 @@ export default function Header() {
     //   socketID: socket.id,
     // });
   };
-  useEffect(()=>{if(notification.length>0)setNotificationAlert(true)},[notification])
 
   return (
     <header className="h-16 bg-white border-b border-gray-primary mb-8">
@@ -65,7 +69,9 @@ export default function Header() {
                 <div className="relative">
                   <Badge
                     className={`p-1 ${
-                      notification.length > 0 && notificationAlert ? "1" : "hidden"
+                     showNotificationAlert
+                        ? "1"
+                        : "hidden"
                     } `}
                   >
                     <button
