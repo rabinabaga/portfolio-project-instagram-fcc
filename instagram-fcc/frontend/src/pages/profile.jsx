@@ -12,7 +12,7 @@ function Profile() {
   const navigate = useNavigate();
   const url_imgs = "http://localhost:8001/images/";
 
-  const { myPhotos } = usePhotos();
+  const { myPhotos,setMyPhotos } = usePhotos();
 
   useEffect(() => {
     if (!user) {
@@ -23,7 +23,7 @@ function Profile() {
   return (
     <>
      
-      <UploadImage></UploadImage>
+      <UploadImage setMyPhotos={setMyPhotos}></UploadImage>
       <div className="grid px-28 grid-cols-4 grid-rows-2 gap-4">
         {myPhotos?.map((photo) => {
           return (
