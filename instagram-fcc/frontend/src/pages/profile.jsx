@@ -4,27 +4,27 @@ import { GlobalDataState } from "../context/GlobalDataProvider";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import UploadImage from "../components/upload-image";
-
-
+import Header from "../components/profile/header";
 
 function Profile() {
   const { user } = GlobalDataState();
+  console.log(user);
   const navigate = useNavigate();
   const url_imgs = "http://localhost:8001/images/";
 
-  const { myPhotos,setMyPhotos } = usePhotos();
+  const { myPhotos, setMyPhotos } = usePhotos();
 
   useEffect(() => {
     if (!user) {
       navigate("/login");
     }
-  }, []);
-  
+  }, []);   
+
   return (
     <>
-     
       <UploadImage setMyPhotos={setMyPhotos}></UploadImage>
-      <div className="grid px-28 grid-cols-4 grid-rows-2 gap-4">
+      <Header username={user?.username}></Header>
+      <div className="max-w-screen-lg mx-auto grid px-28 grid-cols-3 grid-rows-2 gap-4">
         {myPhotos?.map((photo) => {
           return (
             <div key={photo._id}>
