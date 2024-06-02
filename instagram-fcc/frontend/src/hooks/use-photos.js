@@ -93,5 +93,5 @@ export default function usePhotos() {
     getProfilePhotos();
   }, [user]);
 
-  return { photos, myPhotos };
+  return { photos, myPhotos, setMyPhotos };
 }
