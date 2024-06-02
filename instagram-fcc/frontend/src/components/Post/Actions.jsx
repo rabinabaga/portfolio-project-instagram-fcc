@@ -1,7 +1,7 @@
 import { PropTypes } from "prop-types";
 import { useContext, useEffect } from "react";
 import { useState } from "react";
-import {ACCESS_TOKEN} from "../../constants"
+import { ACCESS_TOKEN } from "../../constants";
 
 import { GlobalDataState } from "../../context/GlobalDataProvider";
 import axios from "axios";
@@ -14,13 +14,12 @@ export default function Actions({
   handleFocus,
   totalLikes,
 }) {
- const { socketConnectionState } = useContext(SocketContext);
+  const { socketConnectionState } = useContext(SocketContext);
   const [toggleLiked, setToggleLiked] = useState(likedPhoto);
 
   const [likes, setLikes] = useState(totalLikes);
 
   const { user } = GlobalDataState();
-  
 
   const handleToggleLiked = async () => {
     setLikes((likes) => (toggleLiked ? likes - 1 : likes + 1));
@@ -43,15 +42,16 @@ export default function Actions({
           },
           config
         );
-        socket.emit("userLikedPhoto", data.data);
+
+        if (!(data.data.userDocId._id === user._id)) {
+          socket.emit("userLikedPhoto", data.data);
+        }
       } catch (err) {
         console.log("error in update photo", err);
       }
     }
     updatePhoto();
   };
-
-   
 
   return (
     <>
