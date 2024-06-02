@@ -4,7 +4,8 @@ import { GlobalDataState } from "../context/GlobalDataProvider";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import UploadImage from "../components/upload-image";
-import Header from "../components/profile/header";
+import ProfileHeader from "../components/profile/header";
+import Header from "../components/header"
 
 function Profile() {
   const { user } = GlobalDataState();
@@ -23,7 +24,8 @@ function Profile() {
   return (
     <>
       <UploadImage setMyPhotos={setMyPhotos}></UploadImage>
-      <Header username={user?.username}></Header>
+      <Header></Header>
+      <ProfileHeader username={user?.username}></ProfileHeader>
       <div className="max-w-screen-lg mx-auto grid px-28 grid-cols-3 grid-rows-2 gap-4">
         {myPhotos?.map((photo) => {
           return (

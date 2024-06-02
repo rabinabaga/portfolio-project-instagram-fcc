@@ -41,8 +41,10 @@ function UploadImage({setMyPhotos}) {
   const [completedCrop, setCompletedCrop] = useState();
   const [aspect, setAspect] = useState(1 / 1);
   const [toggle, setToggle] = useState(false);
+  const [fileChosen, setFileChosen] = useState(false);
 
   function onSelectFile(e) {
+    setFileChosen(true);
     if (e.target.files && e.target.files.length > 0) {
       setCrop(undefined); // Makes crop preview update between images.
       const reader = new FileReader();
@@ -88,7 +90,7 @@ function UploadImage({setMyPhotos}) {
       });
     };
     const canvas = previewCanvasRef.current;
-    const resultBlob = await toBlobFromCanvas(canvas);
+    const  resultBlob = await toBlobFromCanvas(canvas);
 
     try {
       const config = {
@@ -115,16 +117,13 @@ function UploadImage({setMyPhotos}) {
 };
 return (
   <>
-    <div   onClick={() => setToggle(!toggle)}
-        data-modal-target="authentication-modal"
-        data-modal-toggle="authentication-modal"
-        className="flex items-center justify-center fixed bottom-24 right-24 w-20 h-20 text-white bg-blue-700 hover:bg-blue-800 text-4xl focus:ring-4 p-5 rounded-full">
-     
-      <span
-      
-      >
-        &#43;
-      </span>
+    <div
+      onClick={() => setToggle(!toggle)}
+      data-modal-target="authentication-modal"
+      data-modal-toggle="authentication-modal"
+      className="flex items-center justify-center fixed bottom-24 right-24 w-20 h-20 text-white bg-blue-700 hover:bg-blue-800 text-4xl focus:ring-4 p-5 rounded-full"
+    >
+      <span>&#43;</span>
     </div>
 
     <hr className="bg-gray-500" />
@@ -133,7 +132,7 @@ return (
         id="authentication-modal"
         tabIndex="-1"
         aria-hidden="true"
-        className=" overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+        className="fixed overflow-y-auto overflow-x-hidden flex justify-center items-center w-full mx-auto z-50 justify-center items-center md:inset-0 h-[calc(100%-1rem)] max-h-full "
       >
         <div className="relative p-4 w-full max-w-md max-h-full">
           <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -194,7 +193,10 @@ return (
                   )}
 
                   <button
-                    className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    className={`block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ${
+                      fileChosen ? "" : "opacity-50 cursor-not-allowed"
+                    }`}
+                    disabled={!fileChosen}
                     type="button"
                     onClick={handlePhotoPost}
                   >
