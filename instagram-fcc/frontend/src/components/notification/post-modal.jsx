@@ -3,9 +3,10 @@ import Post from "../Post";
 function PostModal({ handleClick, content }) {
   return (
     <div
+      style={{ backgroundColor: "rgba(0, 0, 0, 0.6)" }}
       className={`${
-        Object.keys(content).length > 0 ? "block" : "hidden"
-      } fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50`}
+        Object.keys(content).length > 0 ? "1" : "hidden"
+      } fixed inset-0 flex items-center justify-center  z-50`}
     >
       <div className="relative bg-white rounded-lg p-8 w-11/12 md:max-w-md mx-auto">
         <div className="h-96 overflow-y-auto">
