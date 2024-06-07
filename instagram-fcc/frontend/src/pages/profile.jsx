@@ -7,11 +7,16 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux"
 import { togglePrivacy, togglePrivacyAsync } from "../state/profile-privacy/profilePrivacySlice";
+import {
+  getMovieDetailAsync,
+} from "../state/getMovieDetail/getMovieDetailSlice";
 
 
 function Profile() {
   const dispatch = useDispatch();
   const privacyState = useSelector((state) => state.profilePrivacy.privacy);
+
+  const movieDetailState = useSelector((state) => state.movieDetail.movieDetail);
   const [file, setFile] = useState(null);
   const { user } = GlobalDataState();
   const [toggle, setToggle] = useState(false);
@@ -24,6 +29,8 @@ function Profile() {
       navigate("/login")
     }
   },[])
+  console.log("privacy sate", privacyState);
+  console.log("movie detail satte", movieDetailState);
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
@@ -63,6 +70,9 @@ function Profile() {
       </button>
       <button onClick={() => dispatch(togglePrivacyAsync())}>
         toggle async
+      </button>
+      <button onClick={() => dispatch(getMovieDetailAsync())}>
+        get movie detail async
       </button>
       <button
         onClick={() => setToggle(!toggle)}

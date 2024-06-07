@@ -28,7 +28,9 @@ const profilePrivacySlice = createSlice({
 export const togglePrivacyAsync = createAsyncThunk(
   "profilePrivacy/togglePrivacyAsync",
   async () => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) =>{
+      console.log("response data in tog p as");
+    });
     return;
   }
 );
