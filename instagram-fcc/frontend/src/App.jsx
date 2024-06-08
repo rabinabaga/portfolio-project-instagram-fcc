@@ -9,8 +9,13 @@ import { useEffect, useState } from "react";
 import Profile from "./pages/profile.jsx";
 import AuthLayout from "./layouts/auth-layout.jsx";
 import NotFound from "./pages/not-found.jsx";
+import ResetPassword from "./pages/reset-password.jsx";
 
 const router = createBrowserRouter([
+  {
+    path:"/reset-password/:token",
+    element:<ResetPassword/>
+  },
   {
     path: "/login",
     element: <Login />,

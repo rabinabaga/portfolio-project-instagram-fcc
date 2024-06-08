@@ -13,24 +13,24 @@ class AuthController {
 
     const user = await UserModel.findOne({ email: email });
 
-    // const transporter = nodemailer.createTransport({
-    //   host: "sandbox.smtp.mailtrap.io",
-    //   port: 2525,
+    const transporter = nodemailer.createTransport({
+      host: "sandbox.smtp.mailtrap.io",
+      port: 2525,
 
-    //   auth: {
-    //     user: "253dcedc975b38",
-    //     pass: "465ed957b7cb68",
-    //   },
-    // });
+      auth: {
+        user: "2b5dae739691e0",
+        pass: "dc7c53da038f23",
+      },
+    });
 
-    // const info = await transporter.sendMail({
-    //   from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>', // sender address
-    //   to: "tarinaresi50@gmail.com", // list of receivers
-    //   subject: "Hello ✔", // Subject line
-    //   text: "Hello world?", // plain text body
-    //   html: "<b>Hello world?</b>", // html body
-    // });
-    // console.log("Message sent: %s", info.messageId);
+    const info = await transporter.sendMail({
+      from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>', // sender address
+      to: "tarinaresii50@gmail.com", // list of receivers
+      subject: "Hello ✔", // Subject line
+      text: "Hello world??", // plain text body
+      html: '<a href="http://localhost:5173/reset-password/3456tyi">http://localhost:5173/3456tyi</a>'
+    });
+    console.log("Message sent: %s", info.messageId);
     if (user && (await user.matchPassword(password))) {
       const { accessToken, refreshToken } = generateToken(user._id);
       console.log("user", user);
