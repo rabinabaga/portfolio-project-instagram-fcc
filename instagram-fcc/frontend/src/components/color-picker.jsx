@@ -11,6 +11,7 @@ function ColorPicker() {
   return (
     <>
     <div style={{width:"200px", height:"200px", border:"1px solid #000", backgroundColor:color}}>hello</div>
+    <button className="button">Get Started</button>
       <SketchPicker
         className="background-color"
         color={color}
