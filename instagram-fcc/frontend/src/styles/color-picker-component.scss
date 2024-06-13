@@ -1,0 +1,37 @@
+// src/styles/ColorPickerComponent.scss
+
+@import './variables';
+.background-color{
+    background-color: $primary-color;
+}
+
+.color-picker-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .sketch-picker {
+    box-shadow: none !important;
+    border-radius: 8px !important;
+  }
+
+  .sketch-picker .flexbox-fix .hue-horizontal {
+    height: 12px !important;
+  }
+
+  .swatch {
+    padding: 5px;
+    background: $primary-color;
+    border-radius: 3px;
+    display: inline-block;
+    cursor: pointer;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+  }
+
+  .color {
+    width: 36px;
+    height: 36px;
+    border-radius: 2px;
+    background: $primary-color;
+  }
+}
