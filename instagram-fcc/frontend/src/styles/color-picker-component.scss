@@ -15,8 +15,23 @@
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: darken($primary-color, 20%);
+    background-color: darken($primary-color, 90%);
   }
+}
+.auth-one-bg-position{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 380px;
+    
+    @media (max-width: 575.98px) {
+        height: 280px;
+    }
+}
+   .auth-one-bg{
+   background-image: linear-gradient( 180deg, rgba(0, 41, 83, 0.4) , rgba(0, 45, 91, 0.4) ), url("../../public/imges/logo.png");
 }
 
 .color-picker-container {
@@ -39,7 +54,7 @@
     border-radius: 3px;
     display: inline-block;
     cursor: pointer;
-    box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.9);
   }
 
   .color {
